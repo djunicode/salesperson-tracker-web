@@ -17,4 +17,6 @@ before_script:
  - python3 manage.py migrate
 
 script:
+ - black --check salespersonTracker/
+ - black --check salespersonTrackerREST/
  - python3 manage.py test
