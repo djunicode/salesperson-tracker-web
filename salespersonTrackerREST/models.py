@@ -69,8 +69,7 @@ class ItemAssign(models.Model):
 class Inventory(models.Model):
     Salesperson_Ref=models.ForeignKey(Salesperson,on_delete=models.CASCADE)
     item_Ref=models.ForeignKey(Item,on_delete=models.CASCADE)
-    Assigned_Date=models.DateField()
-    Assigned_Time=models.TimeField()
+    
 
     def __str__(self):
         return self.Salesperson_Ref
@@ -88,7 +87,19 @@ class Bill(models.Model):
         return self.Item_Ref
 
 
+class DailyTarget(models.Model):
+    Assigned_By=models.ForeignKey(Manager,on_delete=models.CASCADE)#Doubt about cascade
+    Assigned_To=models.ForeignKey(Salesperson,on_delete=models.CASCADE)
+    Assigned_Date=models.DateField()
+    Assigned_Time=models.TimeField()
+    Item_Ref=models.ForeignKey(ItemAssign,on_delete=models.CASCADE)
+    Quantity=models.IntegerField()
+    Completed=models.BooleanField()
+    Notes=models.TextField()
+    
 
+
+    
 
 
 
