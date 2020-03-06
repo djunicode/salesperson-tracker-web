@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 # Create your models here.
 #Using Custom Django User Model
 #Managers be created via the admin only 
-#Initially give managers same username and password give them access to reset password
-
+#Initially give managers same  password give them access to reset password
+#username:employee_id
 
 
 class Manager(models.Model):
@@ -17,11 +17,12 @@ class Manager(models.Model):
         return self.user_ref.username
 
 #Salesperson will also be created via the admin only 
-#give salesperson the same username,password provide a link to reset their passwords
+#give salesperson the same password provide a link to reset their passwords
+#username:employee_id
 
 class Salesperson(models.Model):
     User_ref=models.ForeignKey(User,on_delete=models.CASCADE)
-    Managed_By=models.ForeignKey(Manager,on_delete=models.CASCADE)
+    Managed_By=models.ForeignKey(Manager,models.SET_NULL,null=True,blank=True)
     Name=models.CharField(max_length=100)
     Photo=models.ImageField(upload_to='salesperson')
     Age=models.IntegerField()
@@ -55,10 +56,11 @@ class Item(models.Model):
 
 class ItemAssign(models.Model):
     Item_Ref=models.ForeignKey(Item,on_delete=models.CASCADE)
-    Assigned_By=models.ForeignKey(Manager,on_delete=models.CASCADE)#Doubt about cascade
-    Assigned_To=models.ForeignKey(Salesperson,on_delete=models.CASCADE)
+    Assigned_By=models.ForeignKey(Manager,models.SET_NULL,null=True,blank=True)
+    Assigned_To=models.ForeignKey(Salesperson,models.SET_NULL,null=True,blank=True)
     Assign_Date=models.DateField()
     Assign_Time=models.TimeField()
+    
 
     def __str__(self):
         return self.Item_Ref
@@ -78,7 +80,7 @@ class Inventory(models.Model):
 class Bill(models.Model):
     Item_Ref=models.ForeignKey(Item,on_delete=models.CASCADE)
     Issued_To=models.CharField(max_length=100)
-    Salesperson_Ref=models.ForeignKey(Salesperson,on_delete=models.CASCADE)#Doubt about cascade
+    Salesperson_Ref=models.ForeignKey(Salesperson,models.SET_NULL,null=True,blank=True)
     Buyer_Contact=models.IntegerField()
     Buyer_email=models.CharField(max_length=100)
     SoftCopy=models.FileField(upload_to='Bills')
@@ -88,7 +90,7 @@ class Bill(models.Model):
 
 
 class DailyTarget(models.Model):
-    Assigned_By=models.ForeignKey(Manager,on_delete=models.CASCADE)#Doubt about cascade
+    Assigned_By=models.ForeignKey(Manager,models.SET_NULL,null=True,blank=True)
     Assigned_To=models.ForeignKey(Salesperson,on_delete=models.CASCADE)
     Assigned_Date=models.DateField()
     Assigned_Time=models.TimeField()
