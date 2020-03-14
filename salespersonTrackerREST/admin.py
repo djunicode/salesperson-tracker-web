@@ -1,5 +1,6 @@
 from django.contrib import admin
-from . models import *
+from .models import Manager, Salesperson, Inventory, Item, ItemAssign, Bill, DailyTarget
+
 # Register your models here.
 admin.site.register(Manager)
 admin.site.register(Salesperson)
