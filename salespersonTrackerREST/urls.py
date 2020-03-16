@@ -6,5 +6,11 @@ from . import views
 
 
 urlpatterns = [
-    path("home", views.home, name="home"),
+    
+    path('SignIn',views.SignIn,name='SignIn'),
+    #path('VerifyChangePassword/<slug:timestamp/<slug:username>/',views.VerifyChangePassword,name='VerifyChangePassowrd'),
+    
+    path('ChangePassword',views.ChangePassword,name='ChangePassword'),
+    path('Logout',views.Logout,name='Logout')
+
 ]
