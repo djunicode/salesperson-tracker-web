@@ -11,8 +11,8 @@ from django.core.mail import send_mail
 from django.utils import timezone
 import datetime
 from django.contrib.auth.decorators import login_required
-
-
+from . models import *
+import base64
 
 
 
@@ -26,23 +26,74 @@ def SignIn(request):
     Username=request.data['Username']
     Password=request.data['Password']
     user=authenticate(request,username=Username,password=Password)
+    login(request,user)
     if user is not None:
         token,_=Token.objects.get_or_create(user=user)
         print(token.key)
-        d={
-            'Token':token.key
-        }
-        response=d
-        print(datetime.datetime.now())
-        return JsonResponse(response,status=status.HTTP_200_OK)
-        login(request,user)
-    else:
-        d={
-            'Token':'NULL'
-        }
-        response=d
-        return JsonResponse(response,status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            m=Manager.objects.get(user_ref=request.user)
+       
+            flag=1
+            s=Salesperson.objects.filter(Managed_By=m)
+            SalesPerson=[]
+            for x in s :
+                d_Salesperson={
+                    'S_id':x.User_ref.username,
+                    'Photo':x.Photo.url,
+                    'Lat':x.last_location_lat,
+                    'Long':x.last_location_long
+                }
+                SalesPerson.append(d_Salesperson)
+                d_Salesperson={}
+            response={
+                'Token':token.key,
+                'Flag':1,
+                'Name':m.Name,
+                'Photo':m.Photo.url,
+                'SalesPerson':SalesPerson
+                }
+            k=m.Photo
+            
+            return JsonResponse(response,status=status.HTTP_200_OK)
+        except:
+            flag=0
+            s=Salesperson.objects.get(User_ref=request.user)
 
+            response={
+
+                'Token':token.key,
+                'S_id':s.User_ref.username,
+                'Flag':flag,
+                'Name':s.Name,
+                'Photo':s.Photo.url,
+                'Lat':s.last_location_lat,
+                'Long':s.last_location_long,
+
+            }
+            return JsonResponse(response,status=status.HTTP_200_OK)
+
+    else:
+        response={
+            'Flag':-1,
+            'Token':'Null',
+
+
+        }
+        return JsonResponse(response,status=status.HTTP_400_BAD_REQUEST)
+        
+
+
+
+
+
+
+
+        
+        
+        
+        
+    
 #Create  a self Expiring Token i.e like an OTP to initiate Password Reset
 #I.e Sending(GET REQUEST) a timestamp of the request and username to FRONTEND API to compare the current timestamp and the timestamp 
 #of the request,if the difference is more than 3 hours ,Display Request Expired
@@ -70,15 +121,16 @@ def VerifyChangePassword(request):
 def ChangePassword(request):
     u_name=request.data['Username']
     n_password=request.data['Password']
-    user=User.objects.get(username=u_name)
-    if user is not None:
+    try:
+        user=User.objects.get(username=u_name)
+    
         user.set_password('{}'.format(n_password))
         user.save()
         d={
             'message':1 #Password Reset Successfull
         }
         return JsonResponse(d,status=status.HTTP_200_OK)
-    else:
+    except:
         d={
             'message':0 # Password Reset Unsuccessfull,Display Invalid Username
         }
@@ -92,6 +144,9 @@ def Logout(request):
         'message':'LoggedOut'
     }
     return JsonResponse(d,status=status.HTTP_200_OK)
+
+
+
 
 
 
