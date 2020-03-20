@@ -6,18 +6,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('salespersonTrackerREST', '0003_auto_20200317_2259'),
+        ("salespersonTrackerREST", "0003_auto_20200317_2259"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='manager',
-            name='Photo',
-            field=models.ImageField(default='media/Default.png', upload_to='managers'),
+            model_name="manager",
+            name="Photo",
+            field=models.ImageField(default="media/Default.png", upload_to="managers"),
         ),
         migrations.AlterField(
-            model_name='salesperson',
-            name='Photo',
-            field=models.ImageField(default='media/Default.png', upload_to='salesperson'),
+            model_name="salesperson",
+            name="Photo",
+            field=models.ImageField(
+                default="media/Default.png", upload_to="salesperson"
+            ),
         ),
     ]

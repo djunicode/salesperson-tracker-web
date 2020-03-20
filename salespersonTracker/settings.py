@@ -39,12 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "corsheaders",
-  
-    'rest_framework.authtoken',
-    'salespersonTrackerREST',
-    
-
-
+    "rest_framework.authtoken",
+    "salespersonTrackerREST",
 ]
 
 MIDDLEWARE = [
@@ -52,7 +48,6 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -61,11 +56,10 @@ MIDDLEWARE = [
 ROOT_URLCONF = "salespersonTracker.urls"
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+    "DEFAULT_AUTHENTICATION_CLASSES": [
         #'rest_framework.authentication.BasicAuthentication',
         #'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-       
+        "rest_framework.authentication.TokenAuthentication",
     ]
 }
 
