@@ -81,6 +81,7 @@ class Bill(models.Model):
     Salesperson_Ref = models.ForeignKey(
         Salesperson, models.SET_NULL, null=True, blank=True
     )
+
     Buyer_Contact = models.IntegerField()
     Buyer_email = models.CharField(max_length=100)
     SoftCopy = models.FileField(upload_to="Bills")
@@ -90,7 +91,7 @@ class Bill(models.Model):
 
 
 class DailyTarget(models.Model):
-    Assigned_By = models.ForeignKey(Manager, models.SET_NULL, blank=True,null=True)
+    Assigned_By = models.ForeignKey(Manager, models.SET_NULL, blank=True, null=True)
     Assigned_To = models.ForeignKey(Salesperson, on_delete=models.CASCADE)
     Assigned_Date = models.DateField()
     Assigned_Time = models.TimeField()
@@ -99,10 +100,12 @@ class DailyTarget(models.Model):
     Completed = models.BooleanField()
     Notes = models.TextField()
 
+
 class TargetsCompleted(models.Model):
-    User_ref=models.ForeignKey(Manager,models.SET_NULL,null=True)
-    Task_completed=models.IntegerField()
+    User_ref = models.ForeignKey(Manager, models.SET_NULL, null=True)
+    Task_completed = models.IntegerField()
+
 
 class TotalTargets(models.Model):
-    User_ref=models.ForeignKey(Manager,models.SET_NULL,null=True)
-    Task_Assigned=models.IntegerField()
+    User_ref = models.ForeignKey(Manager, models.SET_NULL, null=True)
+    Task_Assigned = models.IntegerField()

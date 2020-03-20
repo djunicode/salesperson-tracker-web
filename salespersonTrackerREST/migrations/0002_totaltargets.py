@@ -7,16 +7,31 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('salespersonTrackerREST', '0001_initial'),
+        ("salespersonTrackerREST", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='TotalTargets',
+            name="TotalTargets",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('Task_Assigned', models.IntegerField()),
-                ('User_ref', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='salespersonTrackerREST.Manager')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("Task_Assigned", models.IntegerField()),
+                (
+                    "User_ref",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="salespersonTrackerREST.Manager",
+                    ),
+                ),
             ],
         ),
     ]

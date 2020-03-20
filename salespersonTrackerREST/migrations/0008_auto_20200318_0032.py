@@ -7,23 +7,26 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('salespersonTrackerREST', '0007_auto_20200317_2308'),
+        ("salespersonTrackerREST", "0007_auto_20200317_2308"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='dailytarget',
-            name='Item_Ref',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='salespersonTrackerREST.Inventory'),
+            model_name="dailytarget",
+            name="Item_Ref",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="salespersonTrackerREST.Inventory",
+            ),
         ),
         migrations.AlterField(
-            model_name='manager',
-            name='Photo',
-            field=models.ImageField(upload_to='managers'),
+            model_name="manager",
+            name="Photo",
+            field=models.ImageField(upload_to="managers"),
         ),
         migrations.AlterField(
-            model_name='salesperson',
-            name='Photo',
-            field=models.ImageField(upload_to='media/salesperson'),
+            model_name="salesperson",
+            name="Photo",
+            field=models.ImageField(upload_to="media/salesperson"),
         ),
     ]
