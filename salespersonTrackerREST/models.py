@@ -90,11 +90,19 @@ class Bill(models.Model):
 
 
 class DailyTarget(models.Model):
-    Assigned_By = models.ForeignKey(Manager, models.SET_NULL, null=True, blank=True)
+    Assigned_By = models.ForeignKey(Manager, models.SET_NULL, blank=True,null=True)
     Assigned_To = models.ForeignKey(Salesperson, on_delete=models.CASCADE)
     Assigned_Date = models.DateField()
     Assigned_Time = models.TimeField()
-    Item_Ref = models.ForeignKey(ItemAssign, on_delete=models.CASCADE)
+    Item_Ref = models.ForeignKey(Inventory, on_delete=models.CASCADE)
     Quantity = models.IntegerField()
     Completed = models.BooleanField()
     Notes = models.TextField()
+
+class TargetsCompleted(models.Model):
+    User_ref=models.ForeignKey(Manager,models.SET_NULL,null=True)
+    Task_completed=models.IntegerField()
+
+class TotalTargets(models.Model):
+    User_ref=models.ForeignKey(Manager,models.SET_NULL,null=True)
+    Task_Assigned=models.IntegerField()
