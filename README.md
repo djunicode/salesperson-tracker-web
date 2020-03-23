@@ -1,5 +1,5 @@
 <p>
-    <h1 align='center'> Salesperson </h1>
+    <h1 align='center'> Salesperson Tracker Project </h1>
 </p>
 
 <h4 align='center'>Repository for Unicode 2020 project Salesperson Tracker system. </h4>
