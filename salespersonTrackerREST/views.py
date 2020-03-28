@@ -125,3 +125,18 @@ def Logout(request):
     logout(request)
     d = {"message": "LoggedOut"}
     return JsonResponse(d, status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+def accept(request):
+    data=request.data['data']
+    
+    data=ast.literal_eval(data) 
+    print(type(data))
+    print(data['data'])
+    x=data['data']
+    print(type(x))
+    for y in x:
+        print(y)
+    return JsonResponse('ok',safe=False)
+
