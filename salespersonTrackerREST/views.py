@@ -143,12 +143,12 @@ def Logout(request):
 #     return JsonResponse('ok',safe=False)
 
 
-@api_view(["POST", "GET"])
-@authentication_classes([TokenAuthentication])
-def Test(request):
+# @api_view(["POST", "GET"])
+# @authentication_classes([TokenAuthentication])
+# def Test(request):
 
-    print(request.user)
-    return JsonResponse("ok", safe=False)
+#     print(request.user)
+#     return JsonResponse("ok", safe=False)
 
 
 class AddSalesperson(generics.GenericAPIView):
