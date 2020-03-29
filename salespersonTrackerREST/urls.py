@@ -11,6 +11,6 @@ urlpatterns = [
     path("ChangePassword", views.ChangePassword, name="ChangePassword"),
     path("Logout", views.Logout, name="Logout"),
     path("AddSalesperson", views.AddSalesperson.as_view(), name="AddSalesPerson"),
-    path("Test", views.Test, name="Test"),
+    # path("Test", views.Test, name="Test"),
     # path("accept", views.accept, name="accept"),
 ]
