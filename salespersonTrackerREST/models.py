@@ -96,8 +96,7 @@ class DailyTarget(models.Model):
     Assigned_Date = models.DateField()
     Assigned_Time = models.TimeField()
     Item_Ref = models.ForeignKey(Inventory, on_delete=models.CASCADE)
-    Quantity = models.IntegerField()
-    Completed = models.BooleanField()
+
     Notes = models.TextField()
 
 
