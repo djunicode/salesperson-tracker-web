@@ -16,7 +16,8 @@ urlpatterns = [
     path("SignIn", SignIn, name="SignIn"),
     # path('VerifyChangePassword/<slug:timestamp/<slug:username>/',views.VerifyChangePassword,name='VerifyChangePassowrd'),
     path("ChangePassword", ChangePassword, name="ChangePassword"),
-    path("Logout", Logout, name="Logout"),
+    path("Logout", 
+    Logout, name="Logout"),
     # path("accept", views.accept, name="accept"),
 ]
 
