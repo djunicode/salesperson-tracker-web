@@ -18,8 +18,8 @@ import ast
 ## Virang ke imports
 from rest_framework import viewsets
 from rest_framework import response
-from .serializers import DailyTargetSerializer, TargetsCompletedSerializer, BillSerializer
-from .models import DailyTarget, TargetsCompleted, Bill
+from .serializers import DailyTargetSerializer, BillSerializer
+from .models import DailyTarget, Bill
 from rest_framework import permissions as pm
 
 # Username will Remain constant for both Manager and SalesPerson-EmployeeID
@@ -135,11 +135,7 @@ def Logout(request):
 
 
 
-
-
-
-## Virang's Views
-
+#Virang
 
 class DailyTargetView(viewsets.ModelViewSet):
     queryset = DailyTarget.objects.all()
@@ -149,17 +145,17 @@ class DailyTargetView(viewsets.ModelViewSet):
         pm.IsAdminUser
     ]
 
-class TargetsCompletedView(viewsets.ModelViewSet):
+'''class TargetsCompletedView(viewsets.ModelViewSet):
     queryset=TargetsCompleted.objects.all()
     serializer_class=TargetsCompletedSerializer
     permission_classes=[
         pm.IsAuthenticated,
         pm.IsAdminUser
-    ]
+    ]'''
 
 class BillView(viewsets.ModelViewSet):
     queryset=Bill.objects.all()
     serializer_class=BillSerializer
     permission_classes=[
-        pm.AllowAny
+        pm.AllowAny,
     ]
