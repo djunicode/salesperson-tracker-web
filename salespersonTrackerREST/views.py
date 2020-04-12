@@ -177,3 +177,28 @@ class AddSalesperson(generics.GenericAPIView):
         except:
             data = {"flag": 0, "Message": "Not a User Instance"}
             return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetCoordinates(generics.GenericAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (Permit,)
+
+    def post(self, request):
+
+        m = Manager.objects.get(user_ref=request.user)
+
+        s = Salesperson.objects.filter(Managed_By=m)
+        SalesPerson = []
+        for x in s:
+            d_Salesperson = {
+                "id": x.User_ref.username,
+                "Lat": x.last_location_lat,
+                "Long": x.last_location_long,
+            }
+            SalesPerson.append(d_Salesperson)
+            d_Salesperson = {}
+        response = {
+            "Coordinates": SalesPerson,
+        }
+
+        return JsonResponse(response, status=status.HTTP_200_OK)
