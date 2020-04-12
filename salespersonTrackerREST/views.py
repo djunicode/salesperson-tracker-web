@@ -22,6 +22,7 @@ from .serializers import DailyTargetSerializer, BillSerializer
 from .models import DailyTarget, Bill
 from rest_framework import permissions as pm
 
+
 # Username will Remain constant for both Manager and SalesPerson-EmployeeID
 # Initilisation Password for manager , Salesperson - init@123
 # Authentication Views:
@@ -157,5 +158,9 @@ class BillView(viewsets.ModelViewSet):
     queryset=Bill.objects.all()
     serializer_class=BillSerializer
     permission_classes=[
-        pm.AllowAny,
+        pm.IsAuthenticated,
     ]
+# Create your views here.
+def home(request):
+    pass
+
