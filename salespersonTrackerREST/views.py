@@ -63,7 +63,8 @@ def SignIn(request):
         except:
             flag = 0
             s = Salesperson.objects.get(User_ref=request.user)
-
+            s.isLoggedin = True
+            s.save()
             response = {
                 "Token": token.key,
                 "S_id": s.User_ref.username,
@@ -124,9 +125,15 @@ def ChangePassword(request):
 @api_view(["POST"])
 @authentication_classes([TokenAuthentication])
 def Logout(request):
-    logout(request)
-    d = {"message": "LoggedOut"}
-    return JsonResponse(d, status=status.HTTP_200_OK)
+    try:
+        s = Salesperson.objects.get(User_ref=request.user)
+        s.isLoggedin = False
+        s.save()
+        d = {"message": "LoggedOut"}
+        return JsonResponse(d, status=status.HTTP_200_OK)
+    except:
+        d = {"message": "LoggedOut"}
+        return JsonResponse(d, status=status.HTTP_200_OK)
 
 
 # @api_view(["POST"])
@@ -190,13 +197,14 @@ class GetCoordinates(generics.GenericAPIView):
         s = Salesperson.objects.filter(Managed_By=m)
         SalesPerson = []
         for x in s:
-            d_Salesperson = {
-                "id": x.User_ref.username,
-                "Lat": x.last_location_lat,
-                "Long": x.last_location_long,
-            }
-            SalesPerson.append(d_Salesperson)
-            d_Salesperson = {}
+            if x.isLoggedin == True:
+                d_Salesperson = {
+                    "id": x.User_ref.username,
+                    "Lat": x.last_location_lat,
+                    "Long": x.last_location_long,
+                }
+                SalesPerson.append(d_Salesperson)
+                d_Salesperson = {}
         response = {
             "Coordinates": SalesPerson,
         }

@@ -31,6 +31,7 @@ class Salesperson(models.Model):
     Age = models.IntegerField()
     last_location_lat = models.FloatField()
     last_location_long = models.FloatField()
+    isLoggedin = models.BooleanField(default=False)
 
     def __str__(self):
         return self.User_ref.username
