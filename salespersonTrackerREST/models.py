@@ -32,6 +32,7 @@ class Salesperson(models.Model):
     Age = models.IntegerField()
     last_location_lat = models.FloatField()
     last_location_long = models.FloatField()
+    isLoggedin = models.BooleanField(default=False)
 
     def __str__(self):
         return self.User_ref.username
@@ -44,12 +45,13 @@ class Salesperson(models.Model):
 
 
 # Item model is more a warehouse,where the mangers can view these items and assign them to the salesperson
-class Item(models.Model):
-    Item_Code = models.IntegerField(primary_key=True)
+class warehouse(models.Model):
+
     Item_Group_Code = models.IntegerField()
-    Company_Item_code = models.IntegerField()
+    Company_Item_code = models.IntegerField(primary_key=True)
     Company_Code = models.IntegerField()
     Quantity = models.IntegerField()
+    Name = models.CharField(max_length=100)
     Photo = models.ImageField(upload_to="Item")
     Description = models.TextField()
 
@@ -58,11 +60,12 @@ class Item(models.Model):
 
 
 class ItemAssign(models.Model):
-    Item_Ref = models.ForeignKey(Item, on_delete=models.CASCADE)
+    Item_Ref = models.ForeignKey(warehouse, on_delete=models.CASCADE)
     Assigned_By = models.ForeignKey(Manager, models.SET_NULL, null=True, blank=True)
     Assigned_To = models.ForeignKey(Salesperson, models.SET_NULL, null=True, blank=True)
     Assign_Date = models.DateField()
     Assign_Time = models.TimeField()
+    assign_quantity = models.IntegerField()
 
     def __str__(self):
         return self.Item_Ref
@@ -70,25 +73,11 @@ class ItemAssign(models.Model):
 
 class Inventory(models.Model):
     Salesperson_Ref = models.ForeignKey(Salesperson, on_delete=models.CASCADE)
-    item_Ref = models.ForeignKey(Item, on_delete=models.CASCADE)
+    item_Ref = models.ForeignKey(warehouse, on_delete=models.CASCADE)
+    Quantity = models.IntegerField(blank=True)
 
     def __str__(self):
         return self.Salesperson_Ref
-
-
-class Bill(models.Model):
-    Item_Ref = models.ForeignKey(Item, on_delete=models.CASCADE)
-    Issued_To = models.CharField(max_length=100)
-    Salesperson_Ref = models.ForeignKey(
-        Salesperson, models.SET_NULL, null=True, blank=True
-    )
-    Quantity = models.IntegerField()
-    Buyer_Contact = models.IntegerField()
-    Buyer_email = models.CharField(max_length=100)
-    SoftCopy = models.FileField(upload_to="Bills")
-
-    def __str__(self):
-        return self.Item_Ref
 
 
 class DailyTarget(models.Model):
@@ -100,3 +89,20 @@ class DailyTarget(models.Model):
     Quantity = models.IntegerField()
     Completed = models.BooleanField()
     Notes = models.TextField()
+
+
+class Bill(models.Model):
+    Target_ref = models.ForeignKey(DailyTarget, on_delete=models.CASCADE)
+    item_ref = models.ForeignKey(Inventory, on_delete=models.CASCADE)
+
+    Issued_To = models.CharField(max_length=100)
+    Salesperson_Ref = models.ForeignKey(
+        Salesperson, models.SET_NULL, null=True, blank=True
+    )
+    Quantity = models.IntegerField()
+    Buyer_Contact = models.IntegerField()
+    Buyer_email = models.CharField(max_length=100)
+    SoftCopy = models.FileField(upload_to="Bills")
+
+    def __str__(self):
+        return self.Item_Ref
