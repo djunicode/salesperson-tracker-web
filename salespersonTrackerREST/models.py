@@ -29,7 +29,7 @@ class Salesperson(models.Model):
     Managed_By = models.ForeignKey(Manager, models.SET_NULL, null=True, blank=True)
     Name = models.CharField(max_length=100)
     Photo = models.ImageField(upload_to="salesperson")
-    Age = models.I ntegerField()
+    Age = models.IntegerField()
     last_location_lat = models.FloatField()
     last_location_long = models.FloatField()
 
