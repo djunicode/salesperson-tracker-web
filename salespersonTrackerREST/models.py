@@ -79,7 +79,9 @@ class Inventory(models.Model):
 class Bill(models.Model):
     Item_Ref = models.ForeignKey(Item, on_delete=models.CASCADE)
     Issued_To = models.CharField(max_length=100)
-    Salesperson_Ref = models.ForeignKey(Salesperson, models.SET_NULL, null=True, blank=True)
+    Salesperson_Ref = models.ForeignKey(
+        Salesperson, models.SET_NULL, null=True, blank=True
+    )
     Quantity = models.IntegerField()
     Buyer_Contact = models.IntegerField()
     Buyer_email = models.CharField(max_length=100)

@@ -15,6 +15,7 @@ from .models import *
 import base64
 from django.utils.html import escape
 import ast
+
 ## Virang ke imports
 from rest_framework import viewsets
 from rest_framework import response
@@ -131,37 +132,36 @@ def Logout(request):
     return JsonResponse(d, status=status.HTTP_200_OK)
 
 
+# Virang
 
-
-
-
-
-#Virang
 
 class DailyTargetView(viewsets.ModelViewSet):
     queryset = DailyTarget.objects.all()
-    serializer_class=DailyTargetSerializer
-    permission_classes=[
+    serializer_class = DailyTargetSerializer
+    permission_classes = [
         pm.IsAuthenticated,
         pm.IsAdminUser,
     ]
 
-'''class TargetsCompletedView(viewsets.ModelViewSet):
+
+"""class TargetsCompletedView(viewsets.ModelViewSet):
     queryset=TargetsCompleted.objects.all()
     serializer_class=TargetsCompletedSerializer
     permission_classes=[
         pm.IsAuthenticated,
         pm.IsAdminUser
-    ]'''
+    ]"""
+
 
 class BillView(viewsets.ModelViewSet):
-    queryset=Bill.objects.all()
-    serializer_class=BillSerializer
-    permission_classes=[
+    queryset = Bill.objects.all()
+    serializer_class = BillSerializer
+    permission_classes = [
         pm.IsAuthenticated,
         pm.IsAdminUser,
     ]
+
+
 # Create your views here.
 def home(request):
     pass
-

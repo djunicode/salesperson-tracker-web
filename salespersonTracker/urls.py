@@ -24,7 +24,7 @@ from salespersonTrackerREST import urls
 urlpatterns = [
     path("salesperson/", include("salespersonTrackerREST.urls")),
     path("admin/", admin.site.urls),
-    #path('api/', include('salespersonTrackerREST.urls')),
+    # path('api/', include('salespersonTrackerREST.urls')),
 ]
 urlpatterns = urlpatterns + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
