@@ -26,6 +26,12 @@ from .models import DailyTarget, Bill
 from rest_framework import permissions as pm
 
 
+##
+from .models import *
+from .permissions import IsOwnerOrReadOnly
+from .serializers import *
+
+
 # Username will Remain constant for both Manager and SalesPerson-EmployeeID
 # Initilisation Password for manager , Salesperson - init@123
 # Authentication Views:
@@ -247,3 +253,14 @@ class BillView(viewsets.ModelViewSet):
         pm.IsAuthenticated,
         pm.IsAdminUser,
     ]
+
+class WarehouseViewSet(viewsets.ModelViewSet):
+    queryset = warehouse.objects.all()
+    serializer_class = WarehouseSerializer
+    permission_classes = (pm.IsAdminUser,)
+
+class ItemAssignViewSet(viewsets.ModelViewSet):
+    queryset = ItemAssign.objects.all()
+    serializer_class = ItemAssignSerializer
+    permission_classes = [pm.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly]
