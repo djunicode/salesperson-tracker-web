@@ -32,7 +32,7 @@ class Salesperson(models.Model):
     Age = models.IntegerField()
     last_location_lat = models.FloatField()
     last_location_long = models.FloatField()
-    isLoggedin=models.BooleanField(default=False)
+    isLoggedin = models.BooleanField(default=False)
 
     def __str__(self):
         return self.User_ref.username
@@ -46,12 +46,12 @@ class Salesperson(models.Model):
 
 # Item model is more a warehouse,where the mangers can view these items and assign them to the salesperson
 class warehouse(models.Model):
-   
+
     Item_Group_Code = models.IntegerField()
     Company_Item_code = models.IntegerField(primary_key=True)
     Company_Code = models.IntegerField()
     Quantity = models.IntegerField()
-    Name=models.CharField(max_length=100)
+    Name = models.CharField(max_length=100)
     Photo = models.ImageField(upload_to="Item")
     Description = models.TextField()
 
@@ -65,7 +65,7 @@ class ItemAssign(models.Model):
     Assigned_To = models.ForeignKey(Salesperson, models.SET_NULL, null=True, blank=True)
     Assign_Date = models.DateField()
     Assign_Time = models.TimeField()
-    assign_quantity=models.IntegerField()
+    assign_quantity = models.IntegerField()
 
     def __str__(self):
         return self.Item_Ref
@@ -74,10 +74,11 @@ class ItemAssign(models.Model):
 class Inventory(models.Model):
     Salesperson_Ref = models.ForeignKey(Salesperson, on_delete=models.CASCADE)
     item_Ref = models.ForeignKey(warehouse, on_delete=models.CASCADE)
-    Quantity=models.IntegerField(blank=True)
+    Quantity = models.IntegerField(blank=True)
 
     def __str__(self):
         return self.Salesperson_Ref
+
 
 class DailyTarget(models.Model):
     Assigned_By = models.ForeignKey(Manager, models.SET_NULL, blank=True, null=True)
@@ -88,9 +89,11 @@ class DailyTarget(models.Model):
     Quantity = models.IntegerField()
     Completed = models.BooleanField()
     Notes = models.TextField()
+
+
 class Bill(models.Model):
-    Target_ref=models.ForeignKey(DailyTarget,on_delete=models.CASCADE)
-    item_ref=models.ForeignKey(Inventory,on_delete=models.CASCADE)
+    Target_ref = models.ForeignKey(DailyTarget, on_delete=models.CASCADE)
+    item_ref = models.ForeignKey(Inventory, on_delete=models.CASCADE)
 
     Issued_To = models.CharField(max_length=100)
     Salesperson_Ref = models.ForeignKey(
@@ -103,5 +106,3 @@ class Bill(models.Model):
 
     def __str__(self):
         return self.Item_Ref
-
-

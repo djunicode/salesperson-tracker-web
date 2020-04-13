@@ -22,11 +22,8 @@ urlpatterns = [
     path("GetCoordinates", views.GetCoordinates.as_view(), name="GetCoordinates"),
     # path("Test", views.Test, name="Test"),
     # path("accept", views.accept, name="accept"),
-   
-    #path('daily_target',DailyTargetView.as_view(),name='daily_target'),
-    #path('bill', BillView.as_view(),name='bill'),
-    
-    
+    # path('daily_target',DailyTargetView.as_view(),name='daily_target'),
+    # path('bill', BillView.as_view(),name='bill'),
 ]
 
 urlpatterns += router.urls

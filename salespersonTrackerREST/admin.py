@@ -9,4 +9,3 @@ admin.site.register(ItemAssign)
 admin.site.register(Inventory)
 admin.site.register(Bill)
 admin.site.register(DailyTarget)
-

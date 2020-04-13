@@ -128,6 +128,7 @@ def ChangePassword(request):
         d = {"message": 0}  # Password Reset Unsuccessfull,Display Invalid Username
         return JsonResponse(d, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(["POST"])
 @authentication_classes([TokenAuthentication])
 def Logout(request):
@@ -218,7 +219,6 @@ class GetCoordinates(generics.GenericAPIView):
         return JsonResponse(response, status=status.HTTP_200_OK)
 
 
-
 # Virang
 
 
@@ -247,8 +247,3 @@ class BillView(viewsets.ModelViewSet):
         pm.IsAuthenticated,
         pm.IsAdminUser,
     ]
-
-
-
-
-
