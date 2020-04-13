@@ -15,6 +15,15 @@ from .models import *
 import base64
 from django.utils.html import escape
 import ast
+from django.contrib.auth.models import User
+from .permissions import Permit
+
+## Virang ke imports
+from rest_framework import viewsets
+from rest_framework import response
+from .serializers import DailyTargetSerializer, BillSerializer
+from .models import DailyTarget, Bill
+from rest_framework import permissions as pm
 
 
 # Username will Remain constant for both Manager and SalesPerson-EmployeeID
@@ -31,6 +40,7 @@ def SignIn(request):
     if user is not None:
         token, _ = Token.objects.get_or_create(user=user)
         print(token.key)
+
         login(request, user)
 
         try:
@@ -61,6 +71,8 @@ def SignIn(request):
         except:
             flag = 0
             s = Salesperson.objects.get(User_ref=request.user)
+            s.isLoggedin = True
+            s.save()
 
             response = {
                 "Token": token.key,
@@ -86,7 +98,6 @@ def SignIn(request):
 # of the request,if the difference is more than 3 hours ,Display Request Expired
 # Else accept password and pass the username(obtained from the data sent to API ) to ChnagePassword View
 """@api_view(['POST'])
-
 def VerifyChangePassword(request):
     u_name=request.data['Username']
     n_password=request.data['Password']
@@ -98,7 +109,6 @@ def VerifyChangePassword(request):
         'hrishikesh2pv@gmail.com',
         ['{}'.fromat(user.email)],
         fail_silently=False)
-
     else:
     """
 
@@ -122,6 +132,118 @@ def ChangePassword(request):
 @api_view(["POST"])
 @authentication_classes([TokenAuthentication])
 def Logout(request):
-    logout(request)
-    d = {"message": "LoggedOut"}
-    return JsonResponse(d, status=status.HTTP_200_OK)
+    try:
+        s = Salesperson.objects.get(User_ref=request.user)
+        s.isLoggedin = False
+        s.save()
+        d = {"message": "LoggedOut"}
+        return JsonResponse(d, status=status.HTTP_200_OK)
+    except:
+        d = {"message": "LoggedOut"}
+        return JsonResponse(d, status=status.HTTP_200_OK)
+
+
+# @api_view(["POST"])
+# def accept(request):
+#     data=request.data['data']
+
+#     data=ast.literal_eval(data)
+#     print(type(data))
+#     print(data['data'])
+#     x=data['data']
+#     print(type(x))
+#     for y in x:
+#         print(y)
+#     return JsonResponse('ok',safe=False)
+
+
+# @api_view(["POST", "GET"])
+# @authentication_classes([TokenAuthentication])
+# def Test(request):
+
+#     print(request.user)
+#     return JsonResponse("ok", safe=False)
+
+
+class AddSalesperson(generics.GenericAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (Permit,)
+
+    def post(self, request):
+
+        u_name = request.data["Username"]
+        try:
+            u = User.objects.get(username=u_name)
+            try:
+                s = Salesperson.objects.get(User_ref=u)
+                m = Manager.objects.get(user_ref=request.user)
+                if s.Managed_By == None:
+                    s.Managed_By = m
+                    s.save()
+                    data = {"flag": 1, "Message": "Added to your team"}
+                    return JsonResponse(data, status=status.HTTP_200_OK)
+                else:
+                    data = {"flag": 0, "Message": "Already in a Team"}
+                    return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+            except:
+                data = {"flag": 0, "Message": "Not a salesperson Instance"}
+                return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            data = {"flag": 0, "Message": "Not a User Instance"}
+            return JsonResponse(data, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetCoordinates(generics.GenericAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (Permit,)
+
+    def post(self, request):
+
+        m = Manager.objects.get(user_ref=request.user)
+
+        s = Salesperson.objects.filter(Managed_By=m)
+        SalesPerson = []
+        for x in s:
+            if x.isLoggedin == True:
+                d_Salesperson = {
+                    "id": x.User_ref.username,
+                    "Lat": x.last_location_lat,
+                    "Long": x.last_location_long,
+                }
+                SalesPerson.append(d_Salesperson)
+                d_Salesperson = {}
+        response = {
+            "Coordinates": SalesPerson,
+        }
+
+        return JsonResponse(response, status=status.HTTP_200_OK)
+
+
+# Virang
+
+
+class DailyTargetView(viewsets.ModelViewSet):
+    queryset = DailyTarget.objects.all()
+    serializer_class = DailyTargetSerializer
+    permission_classes = [
+        pm.IsAuthenticated,
+        pm.IsAdminUser,
+    ]
+
+
+"""class TargetsCompletedView(viewsets.ModelViewSet):
+    queryset=TargetsCompleted.objects.all()
+    serializer_class=TargetsCompletedSerializer
+    permission_classes=[
+        pm.IsAuthenticated,
+        pm.IsAdminUser
+    ]"""
+
+
+class BillView(viewsets.ModelViewSet):
+    queryset = Bill.objects.all()
+    serializer_class = BillSerializer
+    permission_classes = [
+        pm.IsAuthenticated,
+        pm.IsAdminUser,
+    ]
