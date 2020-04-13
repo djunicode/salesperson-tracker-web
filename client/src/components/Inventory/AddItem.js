@@ -1,6 +1,5 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-// import clsx from 'clsx';
 import {
   Typography,
   Grid,
@@ -20,7 +19,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 function AddItem() {
   const classes = useStyles();
-  // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  const [itemName, setitemName] = useState("");
+  const [quantity, setquantity] = useState(0);
+  const [units, setunits] = useState("");
+  const [date, setdate] = useState("");
+  const [cost_price, setcost_price] = useState(0);
+  const [details,setDetails] = useState("");
+  
+  useEffect(() => {
+    console.log(itemName);
+    console.log(quantity);
+    console.log(units);
+    console.log(date);
+    console.log(cost_price);
+    console.log(details);
+  });
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -30,11 +43,12 @@ function AddItem() {
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="firstName"
-            name="firstName"
+            id="itemName"
+            name="itemName"
             label="Name"
             fullWidth
-            autoComplete="fname"
+            value = {itemName}
+            onChange={e => setitemName(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}></Grid>
@@ -45,16 +59,21 @@ function AddItem() {
             name="quantity"
             label="Quantity"
             fullWidth
-            autoComplete="billing address-line1"
+            value = {quantity}
+            onChange={e => setquantity(e.target.value)}
           />
         </Grid>
         <Grid item xs={6}>
           <FormControl className={classes.formControl} fullWidth>
             <InputLabel id="demo-simple-select-label">Units</InputLabel>
-            <Select labelId="demo-simple-select-label" id="demo-simple-select">
-              <MenuItem value={10}>Kg</MenuItem>
-              <MenuItem value={20}>grams</MenuItem>
-              <MenuItem value={30}>Tons</MenuItem>
+            <Select labelId="demo-simple-select-label" 
+            id="demo-simple-select" 
+            value = {units}
+            onChange={e => setunits(e.target.value)}
+            >
+              <MenuItem value={"kg"}>Kg</MenuItem>
+              <MenuItem value={"g"}>grams</MenuItem>
+              <MenuItem value={"tons"}>Tons</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -70,6 +89,8 @@ function AddItem() {
               InputLabelProps={{
                 shrink: true,
               }}
+              value = {date}
+              onChange={e => setdate(e.target.value)}
             />
           </form>
         </Grid>
@@ -82,7 +103,8 @@ function AddItem() {
             name="Cost"
             label="Cost Price"
             fullWidth
-            autoComplete="billing country"
+            value = {cost_price}
+            onChange={e => setcost_price(e.target.value)}
           />
         </Grid>
         <Grid item xs={6} sm={6}></Grid>
@@ -93,7 +115,8 @@ function AddItem() {
             name="detail"
             label="Add Details"
             fullWidth
-            autoComplete="billing country"
+            value = {details}
+            onChange={e => setDetails(e.target.value)}
           />
         </Grid>
         <Grid xs={12} className={classes.wrapper}>
