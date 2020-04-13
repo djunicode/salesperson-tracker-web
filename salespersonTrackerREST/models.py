@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import EmailValidator
 
 # Create your models here.
 # Using Custom Django User Model
@@ -43,61 +44,50 @@ class Salesperson(models.Model):
 
 
 # Item model is more a warehouse,where the mangers can view these items and assign them to the salesperson
-class Item(models.Model): #R
+class Item(models.Model):
     Item_Code = models.IntegerField(primary_key=True)
     Item_Group_Code = models.IntegerField()
     Company_Item_code = models.IntegerField()
     Company_Code = models.IntegerField()
+    Quantity = models.IntegerField()
     Photo = models.ImageField(upload_to="Item")
     Description = models.TextField()
-    quantity=models.IntegerField()
 
     def __int__(self):
         return self.Item_Code
 
 
 class ItemAssign(models.Model):
-    Item_Code = models.IntegerField(primary_key=True)
-    Item_Group_Code = models.IntegerField()
-    Company_Item_code = models.IntegerField()
-    Company_Code = models.IntegerField()
-    Photo = models.ImageField(upload_to="Item")
-    Description = models.TextField()
+    Item_Ref = models.ForeignKey(Item, on_delete=models.CASCADE)
+    Assigned_By = models.ForeignKey(Manager, models.SET_NULL, null=True, blank=True)
+    Assigned_To = models.ForeignKey(Salesperson, models.SET_NULL, null=True, blank=True)
+    Assign_Date = models.DateField()
+    Assign_Time = models.TimeField()
 
-    def __int__(self):
-        return self.Item_Code
+    def __str__(self):
+        return self.Item_Ref
 
 
-class Inventory(models.Model):  #R 
-    Item_Code = models.IntegerField(primary_key=True)
-    Item_Group_Code = models.IntegerField()
-    Company_Item_code = models.IntegerField()
-    Company_Code = models.IntegerField()
-    Photo = models.ImageField(upload_to="Item")
-    Description = models.TextField()
-    quantity=models.IntegerField()
+class Inventory(models.Model):
+    Salesperson_Ref = models.ForeignKey(Salesperson, on_delete=models.CASCADE)
+    item_Ref = models.ForeignKey(Item, on_delete=models.CASCADE)
 
-    def __int__(self):
-        return self.Item_Code
+    def __str__(self):
+        return self.Salesperson_Ref
 
 
 class Bill(models.Model):
-    #Salesperson_Ref = models.ForeignKey(Salesperson, on_delete=models.CASCADE)
-    Salesperson_Ref = models.ForeignKey(Salesperson, models.SET_NULL, null=True, blank=True)
-    Item_Code = models.IntegerField(primary_key=True)
-    Item_Group_Code = models.IntegerField()
-    Company_Item_code = models.IntegerField()
-    Company_Code = models.IntegerField()
-    Photo = models.ImageField(upload_to="Item")
-    Description = models.TextField()
-    quantity=models.IntegerField()
+    Item_Ref = models.ForeignKey(Item, on_delete=models.CASCADE)
     Issued_To = models.CharField(max_length=100)
+    Salesperson_Ref = models.ForeignKey(Salesperson, models.SET_NULL, null=True, blank=True)
+    Quantity = models.IntegerField()
     Buyer_Contact = models.IntegerField()
     Buyer_email = models.CharField(max_length=100)
     SoftCopy = models.FileField(upload_to="Bills")
 
-    def __int__(self):
-        return self.Item_Code
+    def __str__(self):
+        return self.Item_Ref
+
 
 class DailyTarget(models.Model):
     Assigned_By = models.ForeignKey(Manager, models.SET_NULL, blank=True, null=True)
@@ -108,8 +98,3 @@ class DailyTarget(models.Model):
     Quantity = models.IntegerField()
     Completed = models.BooleanField()
     Notes = models.TextField()
-
-class Warehouse(models.Model):
-    Item_Ref=models.ForeignKey(Item, on_delete=models.CASCADE)
-    quantity=models.IntegerField()
-

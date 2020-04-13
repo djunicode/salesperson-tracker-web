@@ -142,7 +142,7 @@ class DailyTargetView(viewsets.ModelViewSet):
     serializer_class=DailyTargetSerializer
     permission_classes=[
         pm.IsAuthenticated,
-        pm.IsAdminUser
+        pm.IsAdminUser,
     ]
 
 '''class TargetsCompletedView(viewsets.ModelViewSet):
@@ -157,5 +157,6 @@ class BillView(viewsets.ModelViewSet):
     queryset=Bill.objects.all()
     serializer_class=BillSerializer
     permission_classes=[
-        pm.AllowAny,
+        pm.IsAuthenticated,
+        pm.IsAdminUser,
     ]
