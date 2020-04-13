@@ -45,8 +45,7 @@ class Salesperson(models.Model):
 
 
 # Item model is more a warehouse,where the mangers can view these items and assign them to the salesperson
-class warehouse(models.Model):
-
+class Warehouse(models.Model):
     Item_Group_Code = models.IntegerField()
     Company_Item_code = models.IntegerField(primary_key=True)
     Company_Code = models.IntegerField()
@@ -60,7 +59,7 @@ class warehouse(models.Model):
 
 
 class ItemAssign(models.Model):
-    Item_Ref = models.ForeignKey(warehouse, on_delete=models.CASCADE)
+    Item_Ref = models.ForeignKey(Warehouse, on_delete=models.CASCADE)
     Assigned_By = models.ForeignKey(Manager, models.SET_NULL, null=True, blank=True)
     Assigned_To = models.ForeignKey(Salesperson, models.SET_NULL, null=True, blank=True)
     Assign_Date = models.DateField()
@@ -73,7 +72,7 @@ class ItemAssign(models.Model):
 
 class Inventory(models.Model):
     Salesperson_Ref = models.ForeignKey(Salesperson, on_delete=models.CASCADE)
-    item_Ref = models.ForeignKey(warehouse, on_delete=models.CASCADE)
+    item_Ref = models.ForeignKey(Warehouse, on_delete=models.CASCADE)
     Quantity = models.IntegerField(blank=True)
 
     def __str__(self):
