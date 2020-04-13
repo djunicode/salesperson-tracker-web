@@ -1,66 +1,95 @@
 import React from 'react';
-
 import Avatar from '@material-ui/core/Avatar';
-
 import Button from '@material-ui/core/Button';
-
 import CssBaseline from '@material-ui/core/CssBaseline';
-
 import TextField from '@material-ui/core/TextField';
-
 import Link from '@material-ui/core/Link';
-
 import Grid from '@material-ui/core/Grid';
-
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-
 import Typography from '@material-ui/core/Typography';
-
 import { makeStyles } from '@material-ui/core/styles';
-
 import Container from '@material-ui/core/Container';
+import auth from '../auth';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const useStyles = makeStyles(theme => ({
+// Call it once in your app. At the root of your app is the best place
+toast.configure({
+  position: 'top-right',
+  autoClose: '2000',
+  hideProgressBar: false,
+  newestOnTop: false,
+  closeOnClick: true,
+  rtl: false,
+  pauseOnVisibilityChange: true,
+  draggable: false,
+  pauseOnHover: true,
+});
+
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-
     display: 'flex',
-
     flexDirection: 'column',
-
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   avatar: {
     margin: theme.spacing(1),
-
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
 
   form: {
     width: '100%', // Fix IE 11 issue.
-
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
 
   submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
+    margin: theme.spacing(3, 0, 2),
+  },
 }));
 
-export default function SignIn() {
+export default function SignIn(props) {
   const classes = useStyles();
 
   const [values, setValues] = React.useState({
     username: '',
-    password: ''
+    password: '',
   });
 
-  const handleChange = prop => event => {
-    setValues({ ...values, [prop]: event.target.value });
+  function notify(text, type) {
+    switch (type) {
+      case 'info':
+        toast.info(`🦄${text}`, {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        break;
+      case 'error':
+        toast.error(`🦄${text}`, {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        break;
+    }
+  }
+
+  const handleChange = (prop) => (event) => {
+    setValues({
+      ...values,
+      [prop]: event.target.value,
+    });
   };
 
-  const submitHandler = e => {
+  const submitHandler = (e) => {
     e.preventDefault();
     console.log(values);
 
@@ -70,33 +99,35 @@ export default function SignIn() {
 
     fetch(`http://127.0.0.1:8000/Operations/SignIn`, {
       method: 'POST',
-      body: formData
+      body: formData,
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         console.log(data);
         if (data.Flag === 1) {
-          console.log('Admin logged in successfully');
+          localStorage.setItem('Token', data.Token);
+          localStorage.setItem('Status', 'LoggedIn');
+          auth.login(() => {
+            props.history.push('/dashboard');
+          });
+          notify('  Login Successful!!!', 'info');
         } else {
-          console.log('Unsuccessful');
+          notify('  Incorrect details :(', 'error');
         }
       })
-      .catch(err => console.log);
+      .catch((err) => console.log);
   };
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
-        </Avatar>
-
+        </Avatar>{' '}
         <Typography component="h1" variant="h5">
           Sign in
-        </Typography>
-
+        </Typography>{' '}
         <form className={classes.form} noValidate>
           <TextField
             variant="outlined"
@@ -110,7 +141,6 @@ export default function SignIn() {
             onChange={handleChange('username')}
             autoFocus
           />
-
           <TextField
             variant="outlined"
             margin="normal"
@@ -123,7 +153,6 @@ export default function SignIn() {
             onChange={handleChange('password')}
             autoComplete="current-password"
           />
-
           <Button
             type="submit"
             fullWidth
@@ -132,24 +161,17 @@ export default function SignIn() {
             className={classes.submit}
             onClick={submitHandler}
           >
-            Sign In
-          </Button>
-
+            Sign In{' '}
+          </Button>{' '}
           <Grid container>
             <Grid item xs>
               <Link href="/forgotpass" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-
-            <Grid item>
-              <Link href="/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
+                Forgot password ?
+              </Link>{' '}
+            </Grid>{' '}
+          </Grid>{' '}
+        </form>{' '}
+      </div>{' '}
     </Container>
   );
 }

@@ -1,26 +1,26 @@
 import React from 'react';
 import './App.css';
-import SignUp from './components/SignUp';
-import SalesPeople from './components/SalesPeople';
+import SalesPeople from './components/SalesPeople/SalesPeople';
 import ForgotPass from './components/ForgotPass';
 import SignIn from './components/SignIn';
-import Dashboard from './components/Dashboard';
-import Inventory from './components/Inventory';
+import Dashboard from './components/Dashboard/Dashboard';
+import Inventory from './components/Inventory/Inventory';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
+import SignedInRoute from './SignInRoute';
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Switch>
-          <Route path="/" exact component={SignIn} />{' '}
+          <SignedInRoute path="/" exact component={SignIn} />{' '}
           <Route path="/forgotpass" exact component={ForgotPass} />{' '}
-          <Route path="/signup" exact component={SignUp} />{' '}
-          <Route path="/dashboard" exact component={Dashboard} />{' '}
-          <Route path="/inventory" exact component={Inventory} />{' '}
-          <Route path="/sales-people" exact component={SalesPeople} />{' '}
+          <ProtectedRoute path="/dashboard" exact component={Dashboard} />{' '}
+          <ProtectedRoute path="/inventory" exact component={Inventory} />{' '}
+          <ProtectedRoute path="/sales-people" exact component={SalesPeople} />{' '}
+          <Route path="*" exact component={() => '404 NOT FOUND'} />{' '}
         </Switch>{' '}
-        {/*<ThirdPage />*/} {/*<ForgotPass />*/}
       </div>{' '}
     </Router>
   );
