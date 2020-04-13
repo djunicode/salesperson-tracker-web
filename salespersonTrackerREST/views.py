@@ -40,6 +40,7 @@ def SignIn(request):
     if user is not None:
         token, _ = Token.objects.get_or_create(user=user)
         print(token.key)
+
         login(request, user)
 
         try:
@@ -70,6 +71,8 @@ def SignIn(request):
         except:
             flag = 0
             s = Salesperson.objects.get(User_ref=request.user)
+            s.isLoggedin = True
+            s.save()
 
             response = {
                 "Token": token.key,
@@ -124,42 +127,6 @@ def ChangePassword(request):
     except:
         d = {"message": 0}  # Password Reset Unsuccessfull,Display Invalid Username
         return JsonResponse(d, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
-# Virang
-
-
-class DailyTargetView(viewsets.ModelViewSet):
-    queryset = DailyTarget.objects.all()
-    serializer_class = DailyTargetSerializer
-    permission_classes = [
-        pm.IsAuthenticated,
-        pm.IsAdminUser,
-    ]
-
-
-"""class TargetsCompletedView(viewsets.ModelViewSet):
-    queryset=TargetsCompleted.objects.all()
-    serializer_class=TargetsCompletedSerializer
-    permission_classes=[
-        pm.IsAuthenticated,
-        pm.IsAdminUser
-    ]"""
-
-
-class BillView(viewsets.ModelViewSet):
-    queryset = Bill.objects.all()
-    serializer_class = BillSerializer
-    permission_classes = [
-        pm.IsAuthenticated,
-        pm.IsAdminUser,
-    ]
-
-
-
 
 @api_view(["POST"])
 @authentication_classes([TokenAuthentication])
@@ -249,3 +216,39 @@ class GetCoordinates(generics.GenericAPIView):
         }
 
         return JsonResponse(response, status=status.HTTP_200_OK)
+
+
+
+# Virang
+
+
+class DailyTargetView(viewsets.ModelViewSet):
+    queryset = DailyTarget.objects.all()
+    serializer_class = DailyTargetSerializer
+    permission_classes = [
+        pm.IsAuthenticated,
+        pm.IsAdminUser,
+    ]
+
+
+"""class TargetsCompletedView(viewsets.ModelViewSet):
+    queryset=TargetsCompleted.objects.all()
+    serializer_class=TargetsCompletedSerializer
+    permission_classes=[
+        pm.IsAuthenticated,
+        pm.IsAdminUser
+    ]"""
+
+
+class BillView(viewsets.ModelViewSet):
+    queryset = Bill.objects.all()
+    serializer_class = BillSerializer
+    permission_classes = [
+        pm.IsAuthenticated,
+        pm.IsAdminUser,
+    ]
+
+
+
+
+
