@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import EmailValidator
 
 # Create your models here.
 # Using Custom Django User Model
@@ -48,7 +49,7 @@ class Item(models.Model):
     Item_Group_Code = models.IntegerField()
     Company_Item_code = models.IntegerField()
     Company_Code = models.IntegerField()
-
+    Quantity = models.IntegerField()
     Photo = models.ImageField(upload_to="Item")
     Description = models.TextField()
 
@@ -81,6 +82,7 @@ class Bill(models.Model):
     Salesperson_Ref = models.ForeignKey(
         Salesperson, models.SET_NULL, null=True, blank=True
     )
+    Quantity = models.IntegerField()
     Buyer_Contact = models.IntegerField()
     Buyer_email = models.CharField(max_length=100)
     SoftCopy = models.FileField(upload_to="Bills")
@@ -90,11 +92,11 @@ class Bill(models.Model):
 
 
 class DailyTarget(models.Model):
-    Assigned_By = models.ForeignKey(Manager, models.SET_NULL, null=True, blank=True)
+    Assigned_By = models.ForeignKey(Manager, models.SET_NULL, blank=True, null=True)
     Assigned_To = models.ForeignKey(Salesperson, on_delete=models.CASCADE)
     Assigned_Date = models.DateField()
     Assigned_Time = models.TimeField()
-    Item_Ref = models.ForeignKey(ItemAssign, on_delete=models.CASCADE)
+    Item_Ref = models.ForeignKey(Inventory, on_delete=models.CASCADE)
     Quantity = models.IntegerField()
     Completed = models.BooleanField()
     Notes = models.TextField()
