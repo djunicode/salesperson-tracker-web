@@ -289,4 +289,3 @@ class InventoryViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     # authentication_classes = (TokenAuthentication, )
-
