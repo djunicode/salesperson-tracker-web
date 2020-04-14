@@ -26,14 +26,6 @@ function AddItem() {
   const [cost_price, setcost_price] = useState(0);
   const [details,setDetails] = useState("");
   
-  useEffect(() => {
-    console.log(itemName);
-    console.log(quantity);
-    console.log(units);
-    console.log(date);
-    console.log(cost_price);
-    console.log(details);
-  });
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
