@@ -17,11 +17,11 @@ from django.utils.html import escape
 import ast
 from django.contrib.auth.models import User
 from .permissions import Permit
-
+from .serializers import *
 ## Virang ke imports
 from rest_framework import viewsets
 from rest_framework import response
-from .serializers import DailyTargetSerializer, BillSerializer
+
 from .models import DailyTarget, Bill
 from rest_framework import permissions as pm
 
@@ -217,6 +217,15 @@ class GetCoordinates(generics.GenericAPIView):
         }
 
         return JsonResponse(response, status=status.HTTP_200_OK)
+
+class SalespersonData(generics.ListAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (Permit,)
+    serializer_class=SalespersonSerializer
+    queryset=Salesperson.objects.all()
+
+
+
 
 
 # Virang
