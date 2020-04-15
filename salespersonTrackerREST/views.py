@@ -52,7 +52,7 @@ def SignIn(request):
             for x in s:
                 d_Salesperson = {
                     "S_id": x.User_ref.username,
-                    "Photo": x.Photo.url,
+                    "Photo":str('http://127.0.0.1:8000'+x.Photo.url),
                     "Lat": x.last_location_lat,
                     "Long": x.last_location_long,
                 }
@@ -62,7 +62,7 @@ def SignIn(request):
                 "Token": token.key,
                 "Flag": 1,
                 "Name": m.Name,
-                "Photo": m.Photo.url,
+                "Photo":str('http://127.0.0.1:8000'+m.Photo.url),
                 "SalesPerson": SalesPerson,
             }
             k = m.Photo
@@ -79,7 +79,7 @@ def SignIn(request):
                 "S_id": s.User_ref.username,
                 "Flag": flag,
                 "Name": s.Name,
-                "Photo": s.Photo.url,
+                "Photo":str('http://127.0.0.1:8000'+s.Photo.url),
                 "Lat": s.last_location_lat,
                 "Long": s.last_location_long,
             }
