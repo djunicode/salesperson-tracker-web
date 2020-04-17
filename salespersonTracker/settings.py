@@ -26,8 +26,6 @@ SECRET_KEY = "w!h@y#3tgb@y+qp9przkvj=x(1la_l)40nlh$!l3skjo6-d2$h"
 DEBUG = True
 
 
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -44,7 +42,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",

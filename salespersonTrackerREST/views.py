@@ -18,6 +18,7 @@ import ast
 from django.contrib.auth.models import User
 from .permissions import Permit
 from .serializers import *
+
 ## Virang ke imports
 from rest_framework import viewsets
 from rest_framework import response
@@ -52,7 +53,7 @@ def SignIn(request):
             for x in s:
                 d_Salesperson = {
                     "S_id": x.User_ref.username,
-                    "Photo":str('http://127.0.0.1:8000'+x.Photo.url),
+                    "Photo": str("http://127.0.0.1:8000" + x.Photo.url),
                     "Lat": x.last_location_lat,
                     "Long": x.last_location_long,
                 }
@@ -62,7 +63,7 @@ def SignIn(request):
                 "Token": token.key,
                 "Flag": 1,
                 "Name": m.Name,
-                "Photo":str('http://127.0.0.1:8000'+m.Photo.url),
+                "Photo": str("http://127.0.0.1:8000" + m.Photo.url),
                 "SalesPerson": SalesPerson,
             }
             k = m.Photo
@@ -79,7 +80,7 @@ def SignIn(request):
                 "S_id": s.User_ref.username,
                 "Flag": flag,
                 "Name": s.Name,
-                "Photo":str('http://127.0.0.1:8000'+s.Photo.url),
+                "Photo": str("http://127.0.0.1:8000" + s.Photo.url),
                 "Lat": s.last_location_lat,
                 "Long": s.last_location_long,
             }
@@ -218,14 +219,12 @@ class GetCoordinates(generics.GenericAPIView):
 
         return JsonResponse(response, status=status.HTTP_200_OK)
 
+
 class SalespersonData(generics.ListAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (Permit,)
-    serializer_class=SalespersonSerializer
-    queryset=Salesperson.objects.all()
-
-
-
+    serializer_class = SalespersonSerializer
+    queryset = Salesperson.objects.all()
 
 
 # Virang
