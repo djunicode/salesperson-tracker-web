@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 from salespersonTrackerREST import urls
 
 urlpatterns = [
-    path("salesperson/", include("salespersonTrackerREST.urls")),
+    path("Operations/", include("salespersonTrackerREST.urls")),
     path("admin/", admin.site.urls),
     # path('api/', include('salespersonTrackerREST.urls')),
 ]
