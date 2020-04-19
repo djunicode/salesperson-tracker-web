@@ -138,10 +138,10 @@ def Logout(request):
 class DailyTargetView(viewsets.ModelViewSet):
     queryset = DailyTarget.objects.all()
     serializer_class = DailyTargetSerializer
-    permission_classes = [
+    '''permission_classes = [
         pm.IsAuthenticated,
         pm.IsAdminUser,
-    ]
+    ]'''
 
 
 """class TargetsCompletedView(viewsets.ModelViewSet):
@@ -156,10 +156,10 @@ class DailyTargetView(viewsets.ModelViewSet):
 class BillView(viewsets.ModelViewSet):
     queryset = Bill.objects.all()
     serializer_class = BillSerializer
-    permission_classes = [
+    '''permission_classes = [
         pm.IsAuthenticated,
         pm.IsAdminUser,
-    ]
+    ]'''
 
 
 # Create your views here.
