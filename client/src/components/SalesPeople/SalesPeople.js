@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import RegisterNewSp from './RegisterNewSp';
 import PersonUnder from './PersonUnder';
+import AddPersonToTeam from './AddPersonToTeam';
 import clsx from 'clsx';
 import {
   Container,
@@ -65,6 +66,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     overflow: 'auto',
     flexDirection: 'column',
+    marginTop: '20px'
   },
 }));
 function SalesPeople() {
@@ -73,6 +75,7 @@ function SalesPeople() {
   const logoutUser = async () => {
     await localStorage.setItem('Token', null);
     await localStorage.setItem('Status', 'LoggedOut');
+    await localStorage.setItem('Image', null)
   };
   return (
     <div className={classes.root}>
@@ -93,7 +96,7 @@ function SalesPeople() {
       >
         <div className={classes.toolbar} />
         <Container maxWidth="sm" className={classes.makeCenter}>
-          <Avatar className={classes.setSize} src="/iamges.png" />
+          <Avatar className={ classes.setSize } src={ localStorage.getItem('Image')} />
         </Container>
         <Typography component="h2" variant="h6" style={{ paddingTop: 20 }}>
           Admin Name
@@ -145,6 +148,9 @@ function SalesPeople() {
             <Grid item xs={12} md={6} lg={6}>
               <Paper className={fixedHeightPaper}>
                 <RegisterNewSp />
+              </Paper>
+              <Paper className={fixedHeightPaper}>
+                <AddPersonToTeam />
               </Paper>
             </Grid>
           </Grid>
