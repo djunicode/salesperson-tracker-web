@@ -107,6 +107,7 @@ export default function SignIn(props) {
         if (data.Flag === 1) {
           localStorage.setItem('Token', data.Token);
           localStorage.setItem('Status', 'LoggedIn');
+          localStorage.setItem('Image', data.Photo);
           auth.login(() => {
             props.history.push('/dashboard');
           });
