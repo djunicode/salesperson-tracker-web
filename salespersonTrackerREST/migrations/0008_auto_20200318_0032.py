@@ -6,9 +6,7 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ("salespersonTrackerREST", "0007_auto_20200317_2308"),
-    ]
+    dependencies = [("salespersonTrackerREST", "0007_auto_20200317_2308")]
 
     operations = [
         migrations.AlterField(

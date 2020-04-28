@@ -5,9 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ("salespersonTrackerREST", "0005_auto_20200317_2303"),
-    ]
+    dependencies = [("salespersonTrackerREST", "0005_auto_20200317_2303")]
 
     operations = [
         migrations.AlterField(
@@ -16,5 +14,5 @@ class Migration(migrations.Migration):
             field=models.ImageField(
                 default="media/Default.png", upload_to="media/salesperson"
             ),
-        ),
+        )
     ]

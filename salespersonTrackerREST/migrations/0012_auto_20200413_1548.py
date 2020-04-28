@@ -6,9 +6,7 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ("salespersonTrackerREST", "0011_salesperson_isloggedin"),
-    ]
+    dependencies = [("salespersonTrackerREST", "0011_salesperson_isloggedin")]
 
     operations = [
         migrations.CreateModel(
@@ -26,9 +24,9 @@ class Migration(migrations.Migration):
                 ("Description", models.TextField()),
             ],
         ),
-        migrations.RemoveField(model_name="targetscompleted", name="User_ref",),
-        migrations.RemoveField(model_name="totaltargets", name="User_ref",),
-        migrations.RemoveField(model_name="bill", name="Item_Ref",),
+        migrations.RemoveField(model_name="targetscompleted", name="User_ref"),
+        migrations.RemoveField(model_name="totaltargets", name="User_ref"),
+        migrations.RemoveField(model_name="bill", name="Item_Ref"),
         migrations.AddField(
             model_name="bill",
             name="Quantity",
@@ -95,7 +93,7 @@ class Migration(migrations.Migration):
                 to="salespersonTrackerREST.warehouse",
             ),
         ),
-        migrations.DeleteModel(name="Item",),
-        migrations.DeleteModel(name="TargetsCompleted",),
-        migrations.DeleteModel(name="TotalTargets",),
+        migrations.DeleteModel(name="Item"),
+        migrations.DeleteModel(name="TargetsCompleted"),
+        migrations.DeleteModel(name="TotalTargets"),
     ]

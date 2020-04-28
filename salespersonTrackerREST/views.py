@@ -92,10 +92,7 @@ def SignIn(request):
             return JsonResponse(response, status=status.HTTP_200_OK)
 
     else:
-        response = {
-            "Flag": -1,
-            "Token": "Null",
-        }
+        response = {"Flag": -1, "Token": "Null"}
         return JsonResponse(response, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -218,9 +215,7 @@ class GetCoordinates(generics.GenericAPIView):
                 }
                 SalesPerson.append(d_Salesperson)
                 d_Salesperson = {}
-        response = {
-            "Coordinates": SalesPerson,
-        }
+        response = {"Coordinates": SalesPerson}
 
         return JsonResponse(response, status=status.HTTP_200_OK)
 
@@ -231,10 +226,7 @@ class GetCoordinates(generics.GenericAPIView):
 class DailyTargetView(viewsets.ModelViewSet):
     queryset = DailyTarget.objects.all()
     serializer_class = DailyTargetSerializer
-    permission_classes = [
-        pm.IsAuthenticated,
-        pm.IsAdminUser,
-    ]
+    permission_classes = [pm.IsAuthenticated, pm.IsAdminUser]
 
 
 """class TargetsCompletedView(viewsets.ModelViewSet):
@@ -249,16 +241,15 @@ class DailyTargetView(viewsets.ModelViewSet):
 class BillView(viewsets.ModelViewSet):
     queryset = Bill.objects.all()
     serializer_class = BillSerializer
-    permission_classes = [
-        pm.IsAuthenticated,
-        pm.IsAdminUser,
-    ]
+    permission_classes = [pm.IsAuthenticated, pm.IsAdminUser]
+
 
 class WarehouseViewSet(viewsets.ModelViewSet):
     queryset = warehouse.objects.all()
     serializer_class = WarehouseSerializer
     permission_classes = (Permit,)
     authentication_classes = (TokenAuthentication,)
+
 
 class InventoryList(generics.ListAPIView):
     serializer_class = InventorySerializer
@@ -273,19 +264,19 @@ class AddToInventory(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (Permit,)
 
-    def post(self,request,pk):
-        for i,j in request.data.items():
-            i =int(i)
-            j=int(j)
-            data={'Salesperson_Ref':pk,'item_Ref':i,'Quantity':j}
+    def post(self, request, pk):
+        for i, j in request.data.items():
+            i = int(i)
+            j = int(j)
+            data = {"Salesperson_Ref": pk, "item_Ref": i, "Quantity": j}
             serializer = InventorySerializer(data=data)
             item = warehouse.objects.get(pk=i)
             if serializer.is_valid():
                 serializer.save()
                 item.Quantity = item.Quantity - j
                 item.save()
-                
-            else :
-                return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         message = "Items added to Salesperson Inventory."
-        return Response({'message':message})
+        return Response({"message": message})
