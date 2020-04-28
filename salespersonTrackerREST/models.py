@@ -56,7 +56,7 @@ class warehouse(models.Model):
     Description = models.TextField()
 
     def __int__(self):
-        return self.Item_Code
+        return self.Company_Item_code
 
 
 class ItemAssign(models.Model):

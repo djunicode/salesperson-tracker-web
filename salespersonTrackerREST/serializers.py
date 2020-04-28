@@ -25,3 +25,8 @@ class WarehouseSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = warehouse
 		fields = ['Item_Group_Code','Company_Item_code','Company_Code','Name','Description','Quantity']
+
+class InventorySerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Inventory
+		fields = "__all__"

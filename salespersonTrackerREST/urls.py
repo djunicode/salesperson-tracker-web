@@ -14,7 +14,7 @@ router.register(r"daily_target", DailyTargetView, basename="daily_target")
 router.register(r"bill", BillView, basename="bill")
 # router.register(r'targets_completed', TargetsCompletedView)
 router.register('items',WarehouseViewSet)
-router.register('item_assign',ItemAssignViewSet)
+
 
 
 urlpatterns = [
@@ -28,6 +28,8 @@ urlpatterns = [
     # path("accept", views.accept, name="accept"),
     # path('daily_target',DailyTargetView.as_view(),name='daily_target'),
     # path('bill', BillView.as_view(),name='bill'),
+    path("Salesperson/<int:pk>/Add",views.AddToInventory.as_view(), name="AddToInventory"),
+    path("InventoryList",views.InventoryList.as_view(), name="InventoryList")
 ]
 
 urlpatterns += router.urls

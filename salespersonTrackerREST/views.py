@@ -257,10 +257,35 @@ class BillView(viewsets.ModelViewSet):
 class WarehouseViewSet(viewsets.ModelViewSet):
     queryset = warehouse.objects.all()
     serializer_class = WarehouseSerializer
-    permission_classes = (pm.IsAdminUser,)
+    permission_classes = (Permit,)
+    authentication_classes = (TokenAuthentication,)
 
-class ItemAssignViewSet(viewsets.ModelViewSet):
-    queryset = ItemAssign.objects.all()
-    serializer_class = ItemAssignSerializer
-    permission_classes = [pm.IsAuthenticatedOrReadOnly,
-                          IsOwnerOrReadOnly]
+class InventoryList(generics.ListAPIView):
+    serializer_class = InventorySerializer
+    permission_classes = (Permit,)
+
+    def get_queryset(self):
+        queryset = Inventory.objects.all()
+        return queryset
+
+
+class AddToInventory(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (Permit,)
+
+    def post(self,request,pk):
+        for i,j in request.data.items():
+            i =int(i)
+            j=int(j)
+            data={'Salesperson_Ref':pk,'item_Ref':i,'Quantity':j}
+            serializer = InventorySerializer(data=data)
+            item = warehouse.objects.get(pk=i)
+            if serializer.is_valid():
+                serializer.save()
+                item.Quantity = item.Quantity - j
+                item.save()
+                
+            else :
+                return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        message = "Items added to Salesperson Inventory."
+        return Response({'message':message})
