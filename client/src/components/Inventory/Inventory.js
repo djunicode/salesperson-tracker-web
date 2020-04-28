@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import AddItem from './AddItem';
 import Stocks from './Stocks';
-import clsx from 'clsx';
+
 import {
   Container,
   Button,
@@ -69,10 +69,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 function Inventory() {
   const classes = useStyles();
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   const logoutUser = async () => {
     await localStorage.setItem('Token', null);
     await localStorage.setItem('Status', 'LoggedOut');
+    await localStorage.setItem('Image', null)
   };
   return (
     <div className={classes.root}>
@@ -93,7 +93,7 @@ function Inventory() {
       >
         <div className={classes.toolbar} />
         <Container maxWidth="sm" className={classes.makeCenter}>
-          <Avatar className={classes.setSize} src="/iamges.png" />
+          <Avatar className={ classes.setSize } src={ localStorage.getItem('Image')} />
         </Container>
         <Typography component="h2" variant="h6" style={{ paddingTop: 20 }}>
           Admin Name
@@ -137,13 +137,13 @@ function Inventory() {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={6}>
-              <Paper className={fixedHeightPaper}>
+              <Paper className={classes.paper}>
                 <Stocks />
               </Paper>
             </Grid>
 
             <Grid item xs={12} md={6} lg={6}>
-              <Paper className={fixedHeightPaper}>
+              <Paper className={classes.paper}>
                 <AddItem />
               </Paper>
             </Grid>

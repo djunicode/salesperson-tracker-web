@@ -75,7 +75,7 @@ export default function Dashboard(props) {
   const logoutUser = async () => {
     await localStorage.setItem('Token', null);
     await localStorage.setItem('Status', 'LoggedOut');
-    console.log(auth.isAuthenticated());
+    await localStorage.setItem('Image', null)
   };
   return (
     <div className={classes.root}>
@@ -96,7 +96,7 @@ export default function Dashboard(props) {
       >
         <div className={classes.toolbar} />
         <Container maxWidth="sm" className={classes.makeCenter}>
-          <Avatar className={classes.setSize} src="/iamges.png" />
+          <Avatar className={ classes.setSize } src={ localStorage.getItem('Image') } />
         </Container>
         <Typography component="h2" variant="h6" style={{ paddingTop: 20 }}>
           Admin Name

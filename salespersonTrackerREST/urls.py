@@ -29,6 +29,9 @@ urlpatterns = [
     path("Logout", views.Logout, name="Logout"),
     path("AddSalesperson", views.AddSalesperson.as_view(), name="AddSalesPerson"),
     path("GetCoordinates", views.GetCoordinates.as_view(), name="GetCoordinates"),
+    path(
+        "GetSalespersonData", views.SalespersonData.as_view(), name="GetSalespersonData"
+    )
     # path("Test", views.Test, name="Test"),
     # path("accept", views.accept, name="accept"),
     # path('daily_target',DailyTargetView.as_view(),name='daily_target'),
