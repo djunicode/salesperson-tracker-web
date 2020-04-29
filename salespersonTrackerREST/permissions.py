@@ -15,6 +15,17 @@ class Permit(permissions.BasePermission):
             return False
 
 
+class Permit2(permissions.BasePermission):
+    message = "Access Denied"
+
+    def has_permission(self, request, view):
+        try:
+            s = Salesperson.objects.get(User_ref=request.user)
+            return True
+        except:
+            return False
+
+
 from rest_framework import permissions
 
 
