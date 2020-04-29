@@ -5,11 +5,9 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ("salespersonTrackerREST", "0009_auto_20200318_0033"),
-    ]
+    dependencies = [("salespersonTrackerREST", "0009_auto_20200318_0033")]
 
     operations = [
-        migrations.RemoveField(model_name="dailytarget", name="Completed",),
-        migrations.RemoveField(model_name="dailytarget", name="Quantity",),
+        migrations.RemoveField(model_name="dailytarget", name="Completed"),
+        migrations.RemoveField(model_name="dailytarget", name="Quantity"),
     ]

@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ("salespersonTrackerREST", "0010_auto_20200329_1250"),
-    ]
+    dependencies = [("salespersonTrackerREST", "0010_auto_20200329_1250")]
 
     operations = [
         migrations.AddField(
             model_name="salesperson",
             name="isLoggedin",
             field=models.BooleanField(default=False),
-        ),
+        )
     ]

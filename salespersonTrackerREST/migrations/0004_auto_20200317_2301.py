@@ -5,9 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ("salespersonTrackerREST", "0003_auto_20200317_2259"),
-    ]
+    dependencies = [("salespersonTrackerREST", "0003_auto_20200317_2259")]
 
     operations = [
         migrations.AlterField(
