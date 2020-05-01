@@ -18,8 +18,9 @@ import ast
 from django.contrib.auth.models import User
 from .permissions import *
 from .serializers import *
-import pandas as pd 
+import pandas as pd
 from rest_framework.authtoken.views import APIView
+
 ## Virang ke imports
 from rest_framework import viewsets
 from rest_framework import response
@@ -232,14 +233,16 @@ class SalespersonData(generics.ListAPIView):
 class UpdateCoordinates(generics.GenericAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (Permit2,)
-    def post(self,request):
-        lat=request.POST['latitude']
-        long=request.POST['longitude']
-        s=Salesperson.objects.get(User_ref=request.user)
-        s.last_location_lat=lat
-        s.last_location_long=long
+
+    def post(self, request):
+        lat = request.POST["latitude"]
+        long = request.POST["longitude"]
+        s = Salesperson.objects.get(User_ref=request.user)
+        s.last_location_lat = lat
+        s.last_location_long = long
         s.save()
-        return JsonResponse("Updated", status=status.HTTP_200_OK,safe=False)
+        return JsonResponse("Updated", status=status.HTTP_200_OK, safe=False)
+
 
 # Virang
 
@@ -298,10 +301,11 @@ class AddToInventory(APIView):
                 item.save()
 
             else:
-                return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse(
+                    serializer.errors, status=status.HTTP_400_BAD_REQUEST
+                )
         message = "Items added to Salesperson Inventory."
         return JsonResponse({"message": message})
-
 
 
 # Populate Database----------------------------------------------------------------------------------------------------------

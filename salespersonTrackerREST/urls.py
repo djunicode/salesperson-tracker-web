@@ -36,7 +36,7 @@ urlpatterns = [
     path("InventoryList", views.InventoryList.as_view(), name="InventoryList"),
     path("ManagerPopulate", views.ManagerPopulate, name="ManagerPopulate"),
     path("SalespersonPopulate", views.SalespersonPopulate, name="SalespersonPopulate"),
-    #path("UpdateCoordinates", views.UpdateCoordinates.as_view(), name="UpdateCoordinates"),
+    # path("UpdateCoordinates", views.UpdateCoordinates.as_view(), name="UpdateCoordinates"),
 ]
 
 urlpatterns += router.urls
