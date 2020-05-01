@@ -39,7 +39,6 @@ class SalespersonSerializer(serializers.ModelSerializer):
         ]
 
 
-
 class ItemAssignSerializer(serializers.ModelSerializer):
     class Meta:
         model = ItemAssign
@@ -70,4 +69,3 @@ class InventorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Inventory
         fields = "__all__"
-
