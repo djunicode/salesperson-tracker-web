@@ -10,7 +10,6 @@ from .views import (
     ChangePassword,
     Logout,
     WarehouseViewSet,
-    ItemAssignViewSet,
 )
 from rest_framework import routers
 
