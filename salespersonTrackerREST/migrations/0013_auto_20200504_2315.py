@@ -6,32 +6,29 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('salespersonTrackerREST', '0012_auto_20200413_1548'),
+        ("salespersonTrackerREST", "0012_auto_20200413_1548"),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='warehouse',
-            name='Photo',
+        migrations.RemoveField(model_name="warehouse", name="Photo",),
+        migrations.AlterField(
+            model_name="manager",
+            name="Photo",
+            field=models.ImageField(default="Icon.jpg", upload_to="managers"),
         ),
         migrations.AlterField(
-            model_name='manager',
-            name='Photo',
-            field=models.ImageField(default='Icon.jpg', upload_to='managers'),
+            model_name="salesperson",
+            name="Photo",
+            field=models.ImageField(default="Icon.jpg", upload_to="salesperson"),
         ),
         migrations.AlterField(
-            model_name='salesperson',
-            name='Photo',
-            field=models.ImageField(default='Icon.jpg', upload_to='salesperson'),
-        ),
-        migrations.AlterField(
-            model_name='salesperson',
-            name='last_location_lat',
+            model_name="salesperson",
+            name="last_location_lat",
             field=models.FloatField(null=True),
         ),
         migrations.AlterField(
-            model_name='salesperson',
-            name='last_location_long',
+            model_name="salesperson",
+            name="last_location_long",
             field=models.FloatField(null=True),
         ),
     ]

@@ -72,5 +72,5 @@ class InventorySerializer(serializers.ModelSerializer):
 
 
 class WarehouseUpdateSerializer(serializers.FileField):
-    file=serializers.FileField()
-    fields=['file']
+    file = serializers.FileField()
+    fields = ["file"]
