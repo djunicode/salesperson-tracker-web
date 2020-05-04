@@ -70,9 +70,12 @@ const useStyles = makeStyles((theme) => ({
 function Inventory() {
   const classes = useStyles();
   const logoutUser = async () => {
-    await localStorage.setItem('Token', null);
-    await localStorage.setItem('Status', 'LoggedOut');
-    await localStorage.setItem('Image', null)
+    const r = window.confirm("Do you really want to logout?")
+    if (r == true) {
+      await localStorage.setItem('Token', null);
+      await localStorage.setItem('Status', 'LoggedOut');
+      await localStorage.setItem('Image', null)
+    }
   };
   return (
     <div className={classes.root}>
