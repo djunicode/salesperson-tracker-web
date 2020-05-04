@@ -70,3 +70,8 @@ class InventorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Inventory
         fields = "__all__"
+
+
+class WarehouseUpdateSerializer(serializers.FileField):
+    file = serializers.FileField()
+    fields = ["file"]
