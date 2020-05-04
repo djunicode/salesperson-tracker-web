@@ -266,13 +266,7 @@ class BillView(viewsets.ModelViewSet):
     permission_classes = [pm.IsAuthenticated, pm.IsAdminUser]
 
 
-class WarehouseViewSet(viewsets.ModelViewSet):
-    queryset = warehouse.objects.all()
-    serializer_class = WarehouseSerializer
-    permission_classes = (Permit,)
-    authentication_classes = (TokenAuthentication,)
-
-
+##AliAbbas
 class InventoryList(generics.ListAPIView):
     serializer_class = InventorySerializer
     permission_classes = (Permit,)
@@ -297,11 +291,68 @@ class AddToInventory(APIView):
                 serializer.save()
                 item.Quantity = item.Quantity - j
                 item.save()
+                m = Manager.objects.get(user_ref=request.user)
+                date = datetime.date.today()
+                time = datetime.datetime.now().time()
+                data2 = {'Item_Ref':i,
+                        'Assigned_By':m.pk,
+                        'Assigned_To':pk,
+                        'Assign_Date':date,
+                        'Assign_Time':time,
+                        'assign_quantity':j
+                    }
+                serializer2 = ItemAssignSerializer(data=data2)
+                if serializer2.is_valid():
+                    serializer2.save()
 
             else:
                 return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         message = "Items added to Salesperson Inventory."
         return JsonResponse({"message": message})
+
+class WarehouseView(APIView):
+    permission_classes = (Permit,)
+    authentication_classes = (TokenAuthentication,)
+
+    def get(self, request ,format=None):
+        items = warehouse.objects.all()
+        serializer = WarehouseSerializer(items, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+
+        item_id = request.data["Company_Item_code"]
+        item = warehouse.objects.get(pk=item_id)
+        if item:
+            item.Quantity += int(request.data["Quantity"])
+            item.save()
+            data = {
+                    "Item_Group_Code": item.Item_Group_Code,
+                    "Company_Item_code": item.Company_Item_code,
+                    "Company_Code": item.Company_Code,
+                    "Quantity": item.Quantity,
+                    "Name" : item.Name,
+                    "Photo" : item.Photo,
+                    "Description": item.Description
+                }
+            return JsonResponse(data, status=status.HTTP_200_OK)
+        else:
+            serializer = WarehouseSerializer(data = request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ItemAssignView(APIView):
+    permission_classes = (Permit,)
+
+    def get(self, request):
+        m = Manager.objects.get(user_ref=request.user)
+        items = ItemAssign.objects.filter(Assigned_By=m)
+        serializer = ItemAssignSerializer(items, many=True)
+        return Response(serializer.data)
 
 
 

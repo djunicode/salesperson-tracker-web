@@ -10,7 +10,7 @@ router = routers.DefaultRouter()
 router.register(r"daily_target", views.DailyTargetView, basename="daily_target")
 router.register(r"bill", views.BillView, basename="bill")
 # router.register(r'targets_completed', TargetsCompletedView)
-router.register("items", views.WarehouseViewSet)
+
 
 
 urlpatterns = [
@@ -36,6 +36,8 @@ urlpatterns = [
     path("ManagerPopulate", views.ManagerPopulate, name="ManagerPopulate"),
     path("SalespersonPopulate", views.SalespersonPopulate, name="SalespersonPopulate"),
     #path("UpdateCoordinates", views.UpdateCoordinates.as_view(), name="UpdateCoordinates"),
+    path("warehouse", views.WarehouseView.as_view(), name="WarehouseView"),
+    path("ItemAssign", views.ItemAssignView.as_view(), name="ItemAssignView")
 ]
 
 urlpatterns += router.urls
