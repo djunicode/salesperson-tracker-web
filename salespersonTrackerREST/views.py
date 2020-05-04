@@ -313,8 +313,9 @@ def ManagerPopulate(request):
     df = pd.read_csv("Manager.csv")
     for i in range(len(df)):
         u = User.objects.create_user(
-            username=df.loc[i, "Employee_ID"], password="init@123"
+            username=df.loc[i, "Employee_ID"]
         )
+        u.set_password('init@123')
         u.save()
         m = Manager(user_ref=u, Name=df.loc[i, "Name"], Age=df.loc[i, "Age"])
         m.save()
@@ -336,3 +337,10 @@ def SalespersonPopulate(request):
         )
         s.save()
     return JsonResponse("Done", status=status.HTTP_200_OK, safe=False)
+
+#Update Warehouse-----------------------------------------------------------------------------------------------------------------------------------
+
+class UpdateWarehouse(generics.GenericAPIView):
+    def post(self,request):
+        file=request.data['file']
+        print(type(file))

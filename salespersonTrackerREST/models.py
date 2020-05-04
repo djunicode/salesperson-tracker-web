@@ -12,7 +12,7 @@ from django.core.validators import EmailValidator
 class Manager(models.Model):
     user_ref = models.ForeignKey(User, on_delete=models.CASCADE)
     Name = models.CharField(max_length=100)
-    Photo = models.ImageField(upload_to="managers")
+    Photo = models.ImageField(upload_to="managers",default='Icon.jpg')
     Age = models.IntegerField()
 
     def __str__(self):
@@ -28,10 +28,10 @@ class Salesperson(models.Model):
     User_ref = models.ForeignKey(User, on_delete=models.CASCADE)
     Managed_By = models.ForeignKey(Manager, models.SET_NULL, null=True, blank=True)
     Name = models.CharField(max_length=100)
-    Photo = models.ImageField(upload_to="salesperson")
+    Photo = models.ImageField(upload_to="salesperson",default='Icon.jpg')
     Age = models.IntegerField()
-    last_location_lat = models.FloatField()
-    last_location_long = models.FloatField()
+    last_location_lat = models.FloatField(null=True)
+    last_location_long = models.FloatField(null=True)
     isLoggedin = models.BooleanField(default=False)
 
     def __str__(self):
@@ -52,7 +52,7 @@ class warehouse(models.Model):
     Company_Code = models.IntegerField()
     Quantity = models.IntegerField()
     Name = models.CharField(max_length=100)
-    Photo = models.ImageField(upload_to="Item")
+    
     Description = models.TextField()
 
     def __int__(self):
