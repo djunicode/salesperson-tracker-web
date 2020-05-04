@@ -12,7 +12,6 @@ router.register(r"bill", views.BillView, basename="bill")
 # router.register(r'targets_completed', TargetsCompletedView)
 
 
-
 urlpatterns = [
     path("SignIn", views.SignIn, name="SignIn"),
     # path('VerifyChangePassword/<slug:timestamp/<slug:username>/',views.VerifyChangePassword,name='VerifyChangePassowrd'),
@@ -35,9 +34,9 @@ urlpatterns = [
     path("InventoryList", views.InventoryList.as_view(), name="InventoryList"),
     path("ManagerPopulate", views.ManagerPopulate, name="ManagerPopulate"),
     path("SalespersonPopulate", views.SalespersonPopulate, name="SalespersonPopulate"),
-    #path("UpdateCoordinates", views.UpdateCoordinates.as_view(), name="UpdateCoordinates"),
+    # path("UpdateCoordinates", views.UpdateCoordinates.as_view(), name="UpdateCoordinates"),
     path("warehouse", views.WarehouseView.as_view(), name="WarehouseView"),
-    path("ItemAssign", views.ItemAssignView.as_view(), name="ItemAssignView")
+    path("ItemAssign", views.ItemAssignView.as_view(), name="ItemAssignView"),
 ]
 
 urlpatterns += router.urls
