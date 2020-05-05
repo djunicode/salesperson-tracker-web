@@ -9,6 +9,22 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import auth from '../auth';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure({
+  position: 'top-right',
+  autoClose: '2000',
+  hideProgressBar: false,
+  newestOnTop: false,
+  closeOnClick: true,
+  rtl: false,
+  pauseOnVisibilityChange: true,
+  draggable: false,
+  pauseOnHover: true,
+});
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ForgotPass() {
+export default function ForgotPass(props) {
   const classes = useStyles();
 
   const [values, setValues] = React.useState({
@@ -44,6 +60,31 @@ export default function ForgotPass() {
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
+
+  function notify(text, type) {
+    switch (type) {
+      case 'info':
+        toast.info(`🦄${text}`, {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        break;
+      case 'error':
+        toast.error(`🦄${text}`, {
+          position: 'top-right',
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        break;
+    }
+  }
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -61,9 +102,12 @@ export default function ForgotPass() {
       .then((data) => {
         console.log(data);
         if (data.message === 1) {
-          console.log('Password is changed successfully');
+          notify('  Password changed!!!', 'info');
+          auth.login(() => {
+            props.history.push('/');
+          });
         } else {
-          console.log('Unsuccessful');
+          notify('  Incorrect details :(', 'error');
         }
       })
       .catch((err) => console.log);
