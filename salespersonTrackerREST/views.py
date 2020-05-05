@@ -317,7 +317,6 @@ class AddToInventory(APIView):
         return JsonResponse({"message": message})
 
 
-
 class WarehouseView(APIView):
     permission_classes = (Permit,)
     authentication_classes = (TokenAuthentication,)
@@ -330,7 +329,10 @@ class WarehouseView(APIView):
     def post(self, request):
 
         item_id = request.data["Company_Item_code"]
-        item = warehouse.objects.get(pk=item_id)
+        try:
+            item = warehouse.objects.get(pk=item_id)
+        except warehouse.DoesNotExist:
+            item = None
         if item:
             item.Quantity += int(request.data["Quantity"])
             item.save()
@@ -340,7 +342,7 @@ class WarehouseView(APIView):
                 "Company_Code": item.Company_Code,
                 "Quantity": item.Quantity,
                 "Name": item.Name,
-                "Photo": item.Photo,
+                "Photo": str(request.data["Photo"]),
                 "Description": item.Description,
             }
             return JsonResponse(data, status=status.HTTP_200_OK)
@@ -361,7 +363,6 @@ class ItemAssignView(APIView):
         items = ItemAssign.objects.filter(Assigned_By=m)
         serializer = ItemAssignSerializer(items, many=True)
         return Response(serializer.data)
-
 
 
 # Populate Database----------------------------------------------------------------------------------------------------------
