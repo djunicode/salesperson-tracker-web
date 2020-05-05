@@ -345,7 +345,7 @@ class WarehouseView(APIView):
                 "Photo": str(request.data["Photo"]),
                 "Description": item.Description,
             }
-            return JsonResponse(data, status=status.HTTP_200_OK)
+            return Response(data, status=status.HTTP_200_OK)
         else:
             serializer = WarehouseSerializer(data=request.data)
             if serializer.is_valid():
