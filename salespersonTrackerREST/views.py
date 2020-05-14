@@ -290,7 +290,7 @@ class AddToInventory(APIView):
             j = int(j)
             data = {"Salesperson_Ref": pk, "item_Ref": i, "Quantity": j}
             serializer = InventorySerializer(data=data)
-            item = warehouse.objects.get(pk=i)
+            item = Warehouse.objects.get(pk=i)
             if serializer.is_valid():
                 serializer.save()
                 item.Quantity = item.Quantity - j
@@ -323,7 +323,7 @@ class WarehouseView(APIView):
     authentication_classes = (TokenAuthentication,)
 
     def get(self, request, format=None):
-        items = warehouse.objects.all()
+        items = Warehouse.objects.all()
         serializer = WarehouseSerializer(items, many=True)
         return Response(serializer.data)
 
@@ -331,8 +331,8 @@ class WarehouseView(APIView):
 
         item_id = request.data["Company_Item_code"]
         try:
-            item = warehouse.objects.get(pk=item_id)
-        except warehouse.DoesNotExist:
+            item = Warehouse.objects.get(pk=item_id)
+        except Warehouse.DoesNotExist:
             item = None
         if item:
             item.Quantity += int(request.data["Quantity"])
@@ -406,7 +406,7 @@ class UpdateWarehouse(generics.GenericAPIView):
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = Userserializer
     permission_classes = (permissions.IsAdminUser,)
     # authentication_classes = (TokenAuthentication,)
 

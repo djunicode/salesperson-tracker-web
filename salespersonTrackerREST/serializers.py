@@ -21,6 +21,12 @@ class Userserializer(serializers.ModelSerializer):
         fields = ["username"]
 
 
+class ManagerSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Manager
+        fields = ["user_ref", "Name", "Photo", "Age"]
+
+
 class SalespersonSerializer(serializers.ModelSerializer):
     User_ref = Userserializer(many=False, read_only=True)
 
@@ -54,7 +60,7 @@ class ItemAssignSerializer(serializers.ModelSerializer):
 
 class WarehouseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = warehouse
+        model = Warehouse
         fields = [
             "Item_Group_Code",
             "Company_Item_code",
