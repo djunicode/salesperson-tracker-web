@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view, authentication_classes
+from rest_framework.decorators import api_view, authentication_classes, action
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication, BasicAuthentication
 import json
 from django.http import JsonResponse, HttpResponse
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets, permissions
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.utils import timezone
@@ -20,6 +20,7 @@ from .permissions import *
 from .serializers import *
 import pandas as pd
 from rest_framework.authtoken.views import APIView
+from rest_framework.response import Response
 
 ## Virang ke imports
 from rest_framework import viewsets
@@ -401,3 +402,44 @@ class UpdateWarehouse(generics.GenericAPIView):
     def post(self, request):
         file = request.data["file"]
         print(type(file))
+
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (permissions.IsAdminUser,)
+    # authentication_classes = (TokenAuthentication,)
+
+
+class ManagerViewSet(viewsets.ModelViewSet):
+    queryset = Manager.objects.all()
+    serializer_class = ManagerSerializer
+    permission_classes = (permissions.IsAdminUser,)
+    # authentication_classes = (TokenAuthentication,)
+
+
+class SalespersonViewSet(viewsets.ModelViewSet):
+    queryset = Salesperson.objects.all()
+    serializer_class = SalespersonSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    # authentication_classes = (TokenAuthentication, )
+
+
+class WarehouseViewSet(viewsets.ModelViewSet):
+    queryset = Warehouse.objects.all()
+    serializer_class = WarehouseSerializer
+    permission_classes = (Permit,)
+    # authentication_classes = (TokenAuthentication, )
+
+
+class InventoryViewSet(viewsets.ModelViewSet):
+    queryset = Inventory.objects.all()
+    serializer_class = InventorySerializer
+
+    @action(detail=False)
+    def inventory(self, request):
+        inv = Inventory.objects.filter(user_ref=request.user)  # Android Endpoint
+        serializer = self.get_serializer(inv, many=True)
+        return Response(serializer.data)
+
+    # authentication_classes = (TokenAuthentication, )

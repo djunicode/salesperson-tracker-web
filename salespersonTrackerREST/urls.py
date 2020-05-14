@@ -9,6 +9,11 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register(r"daily_target", views.DailyTargetView, basename="daily_target")
 router.register(r"bill", views.BillView, basename="bill")
+router.register(r"manager", views.ManagerViewSet)
+router.register(r"user", views.UserViewSet)
+router.register(r"salesperson", views.SalespersonViewSet)
+router.register(r"warehouse", views.WarehouseViewSet)
+router.register(r"inventory", views.InventoryViewSet)
 # router.register(r'targets_completed', TargetsCompletedView)
 
 
