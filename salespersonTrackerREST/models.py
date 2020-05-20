@@ -79,6 +79,7 @@ class Inventory(models.Model):
         # return self.Salesperson_Ref
         return self.Salesperson_Ref.User_ref.username
 
+
 class DailyTarget(models.Model):
     Assigned_By = models.ForeignKey(Manager, models.SET_NULL, blank=True, null=True)
     Assigned_To = models.ForeignKey(Salesperson, on_delete=models.CASCADE)
