@@ -76,8 +76,8 @@ class Inventory(models.Model):
     Quantity = models.IntegerField(blank=True)
 
     def __str__(self):
-        return self.Salesperson_Ref
-
+        # return self.Salesperson_Ref
+        return self.Salesperson_Ref.User_ref.username
 
 class DailyTarget(models.Model):
     Assigned_By = models.ForeignKey(Manager, models.SET_NULL, blank=True, null=True)

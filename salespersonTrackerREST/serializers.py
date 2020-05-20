@@ -68,7 +68,8 @@ class WarehouseSerializer(serializers.ModelSerializer):
             "Name",
             "Description",
             "Quantity",
-            "Photo",
+            "pk"
+            # "Photo",
         ]
 
 

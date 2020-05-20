@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import axios from 'axios'
-import './PersUnd.css'
+import './Persund.css'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -79,13 +78,13 @@ var PersonUnder = () => {
   const token = word.concat(`${localStorage.getItem('Token')}`);
   let formData = new FormData();
   formData.append('Authorization', `${token}`);
-    fetch(`http://127.0.0.1:8000/Operations/GetSalespersonData`, {
+    fetch(`http://127.0.0.1:8000/GetSalespersonData`, {
       method: 'GET',
       headers: formData
     })
       .then((res) => res.json())
       .then((data) => {
-       var myPeople = data.filter(d => d.User_ref.username == 'admin2');
+       var myPeople = data.filter(d => d.User_ref.username == localStorage.getItem('Name'));
        console.log(myPeople)
        listing(myPeople)
        console.log(ListPeople)
