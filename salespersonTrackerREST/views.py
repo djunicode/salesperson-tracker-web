@@ -56,7 +56,6 @@ def SignIn(request):
 
         try:
             m = Manager.objects.get(user_ref=request.user)
-
             flag = 1
             s = Salesperson.objects.filter(Managed_By=m)
             SalesPerson = []
@@ -73,6 +72,7 @@ def SignIn(request):
                 "Token": token.key,
                 "Flag": 1,
                 "Name": m.Name,
+                "m_id": m.pk,
                 "Photo": str("http://127.0.0.1:8000" + m.Photo.url),
                 "SalesPerson": SalesPerson,
             }

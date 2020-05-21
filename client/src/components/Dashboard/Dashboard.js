@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -17,7 +17,6 @@ import Map from './Map';
 
 const purp = purple[900];
 const drawerWidth = 241;
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -74,7 +73,7 @@ export default function Dashboard(props) {
     await localStorage.setItem('Image', null)
     }
     }
-  
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -97,7 +96,7 @@ export default function Dashboard(props) {
           <Avatar className={ classes.setSize } src={ localStorage.getItem('Image') } />
         </Container>
         <Typography component="h2" variant="h6" style={{ paddingTop: 20 }}>
-          Admin Name
+          {localStorage.getItem('Name')}
         </Typography>
         <Typography
           component="h3"

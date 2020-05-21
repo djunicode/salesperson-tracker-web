@@ -103,7 +103,7 @@ function SalesPeople() {
           <Avatar className={ classes.setSize } src={ localStorage.getItem('Image')} />
         </Container>
         <Typography component="h2" variant="h6" style={{ paddingTop: 20 }}>
-          Admin Name
+          {localStorage.getItem('Name')}
         </Typography>
         <Typography
           component="h3"

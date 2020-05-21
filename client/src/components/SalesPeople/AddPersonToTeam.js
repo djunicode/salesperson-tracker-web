@@ -78,7 +78,7 @@ const AddPersonToTeam = () => {
     let formData = new FormData();
     formData.append('Authorization', `${token}`);
 
-    fetch(`http://127.0.0.1:8000/Operations/GetSalespersonData`, {
+    fetch(`http://127.0.0.1:8000/GetSalespersonData`, {
       method: 'GET',
       headers: formData,
     })

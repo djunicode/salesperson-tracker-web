@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -11,6 +11,9 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { useState } from 'react';
+import {formData} from '../../AuthToken';
+import { Box } from '@material-ui/core';
 
 
 
@@ -40,6 +43,10 @@ const useStyles = makeStyles(theme => ({
 
     color: theme.palette.text.secondary
 
+  },
+  detail : {
+    display:'block',
+    textAlign:'initial'
   }
 
 }));
@@ -49,15 +56,53 @@ const useStyles = makeStyles(theme => ({
 function Stocks() {
 
   const classes = useStyles();
-
   const [expanded, setExpanded] = React.useState(false);
+  const [assigned_items, setassigned_items] = useState([]);
+  
+  
 
- 
+  async function setupList()
+  {
+    var invList=[];
+    fetch("http://127.0.0.1:8000/InventoryList", {method: 'GET',headers: formData})
+      .then(response => response.json())
+      .then(result => {
+        for(let i=0;i<result.length;i++)
+        {
+          let itemDetail={"id":result[i].id,"target":result[i].Quantity};
+          fetch(`http://127.0.0.1:8000/salesperson/${result[i].Salesperson_Ref}/`, {method: 'GET',headers: formData})
+            .then(response => response.json())
+            .then(result => {
+              itemDetail = {...itemDetail,"salesperson":result.Name};
+            })
+            .catch(error => console.log('error', error));
 
+          fetch(`http://127.0.0.1:8000/warehouse/${result[i].item_Ref}`, {method: 'GET',headers: formData})
+            .then(response => response.json())
+            .then(result => {
+              itemDetail={...itemDetail,"quantity":result.Quantity,"item_name":result.Name,"description":result.Description};
+      
+              invList.push(itemDetail);
+            
+              setassigned_items([...invList]);
+              
+            })
+            .catch(error => console.log('error', error));
+
+          
+        }
+        
+      })
+      .catch(error => console.log('error', error));  
+     
+  }
+  useEffect(() => {
+    setupList();
+  },[]);
+  
   const handleChange = panel => (event, isExpanded) => {
 
     setExpanded(isExpanded ? panel : false);
-
   };
 
  
@@ -65,31 +110,73 @@ function Stocks() {
   return (
 
     <div
-
-      
-
       style={{
-
-        
-
         overflow: 'hidden',
-
-        
-
       }}
-
     >
-
-<Typography variant="h6" gutterBottom>
-       STOCKS
+      <Typography variant="h6" gutterBottom>
+        ASSIGNED ITEMS
       </Typography>
+      {
+          assigned_items.map(temp => {
+            return(
+              <ExpansionPanel
+                expanded={expanded === temp.id}
+                onChange={handleChange(temp.id)}
+              >
 
-      <ExpansionPanel
+                <ExpansionPanelSummary
 
-        expanded={expanded === 'panel1'}
+                  expandIcon={<ExpandMoreIcon />}
 
-        onChange={handleChange('panel1')}
+                >
 
+                  <Typography className={classes.heading}>{ temp.item_name} </Typography>
+
+                  <Typography
+
+                    className={classes.secondaryHeading}
+
+                    style={{ marginLeft: '35px' }}
+
+                  >
+
+                    {temp.salesperson}
+
+                  </Typography>
+
+                </ExpansionPanelSummary>
+
+                <ExpansionPanelDetails className={classes.detail}>
+
+                  <Typography component="div">
+
+                    Target : {temp.target}
+
+                  </Typography>{' '}
+                  <Typography component="div">
+
+                    In Stock : {temp.quantity}
+
+                  </Typography>
+                  <Typography component="div" style={{display:'block'}}>
+
+                    Description : {temp.description}
+
+                  </Typography>
+                  
+                  
+
+                </ExpansionPanelDetails>
+
+              </ExpansionPanel>
+            )
+          })   
+      }
+
+      {/* <ExpansionPanel
+        expanded={expanded === 1}
+        onChange={handleChange(1)}
       >
 
         <ExpansionPanelSummary
@@ -132,9 +219,9 @@ function Stocks() {
 
       <ExpansionPanel
 
-        expanded={expanded === 'panel1'}
+        expanded={expanded === 'panel2'}
 
-        onChange={handleChange('panel1')}
+        onChange={handleChange('panel2')}
 
       >
 
@@ -178,9 +265,9 @@ function Stocks() {
 
       <ExpansionPanel
 
-        expanded={expanded === 'panel1'}
+        expanded={expanded === 'panel3'}
 
-        onChange={handleChange('panel1')}
+        onChange={handleChange('panel3')}
 
       >
 
@@ -224,9 +311,9 @@ function Stocks() {
 
       <ExpansionPanel
 
-        expanded={expanded === 'panel1'}
+        expanded={expanded === 'panel4'}
 
-        onChange={handleChange('panel1')}
+        onChange={handleChange('panel4')}
 
       >
 
@@ -264,7 +351,7 @@ function Stocks() {
 
         </ExpansionPanelDetails>{' '}
 
-      </ExpansionPanel>{' '}
+      </ExpansionPanel>{' '} */}
 
     </div>
 
