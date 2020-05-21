@@ -20,10 +20,12 @@ from .permissions import Permit
 
 ## Virang ke imports
 from rest_framework import viewsets
-from rest_framework import response
+from rest_framework.response import Response
 from .serializers import DailyTargetSerializer, BillSerializer
 from .models import DailyTarget, Bill
 from rest_framework import permissions as pm
+from os import path
+from django.core.mail import EmailMessage
 
 
 # Username will Remain constant for both Manager and SalesPerson-EmployeeID
@@ -167,7 +169,7 @@ def Logout(request):
 
 class AddSalesperson(generics.GenericAPIView):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (Permit,)
+    # permission_classes = (Permit,)
 
     def post(self, request):
 
@@ -195,7 +197,7 @@ class AddSalesperson(generics.GenericAPIView):
 
 class GetCoordinates(generics.GenericAPIView):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (Permit,)
+    # permission_classes = (Permit,)
 
     def post(self, request):
 
@@ -227,8 +229,8 @@ class DailyTargetView(viewsets.ModelViewSet):
     serializer_class = DailyTargetSerializer
     permission_classes = [
         pm.IsAuthenticated,
-        pm.IsAdminUser,
     ]
+    authentication_classes = (TokenAuthentication,)
 
 
 """class TargetsCompletedView(viewsets.ModelViewSet):
@@ -245,5 +247,30 @@ class BillView(viewsets.ModelViewSet):
     serializer_class = BillSerializer
     permission_classes = [
         pm.IsAuthenticated,
-        pm.IsAdminUser,
     ]
+    authentication_classes = (TokenAuthentication,)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        to_email = serializer.validated_data["Buyer_email"]
+        soft_copy = serializer.validated_data["SoftCopy"]
+        bill_path = path.abspath(soft_copy.name)
+        email = EmailMessage(
+            "Subject of the Email",
+            "Body of the Email",
+            "virangparekh73@gmail.com",
+            [to_email,],
+        )
+        email.attach_file(bill_path)
+        email.send()
+        serializer.save()
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
+
+
+# Create your views here.
+def home(request):
+    pass

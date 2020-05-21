@@ -35,7 +35,7 @@ class Salesperson(models.Model):
     isLoggedin = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.User_ref.username
+        return self.Managed_By.name
 
 
 # Item_Group_Code:
@@ -78,6 +78,17 @@ class Inventory(models.Model):
 
     def __str__(self):
         return self.Salesperson_Ref
+
+
+class DailyTarget(models.Model):
+    Assigned_By = models.ForeignKey(Manager, models.SET_NULL, blank=True, null=True)
+    Assigned_To = models.ForeignKey(Salesperson, on_delete=models.CASCADE)
+    Assigned_Date = models.DateField()
+    Assigned_Time = models.TimeField()
+    Item_Ref = models.ForeignKey(Inventory, on_delete=models.CASCADE)
+    Quantity = models.IntegerField()
+    Completed = models.BooleanField()
+    Notes = models.TextField()
 
 
 class DailyTarget(models.Model):
