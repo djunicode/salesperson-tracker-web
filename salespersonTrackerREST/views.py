@@ -62,7 +62,7 @@ def SignIn(request):
             for x in s:
                 d_Salesperson = {
                     "S_id": x.User_ref.username,
-                    "Photo": str("http://127.0.0.1:8000" + x.Photo.url),
+                    "Photo": str(x.Photo.url),
                     "Lat": x.last_location_lat,
                     "Long": x.last_location_long,
                 }
@@ -72,11 +72,11 @@ def SignIn(request):
                 "Token": token.key,
                 "Flag": 1,
                 "Name": m.Name,
-                "m_id": m.pk,
-                "Photo": str("http://127.0.0.1:8000" + m.Photo.url),
+                "Photo": str(m.Photo.url),
                 "SalesPerson": SalesPerson,
             }
-            k = m.Photo
+            k = m.Photo.url
+            print(k)
 
             return JsonResponse(response, status=status.HTTP_200_OK)
         except:
@@ -90,7 +90,7 @@ def SignIn(request):
                 "S_id": s.User_ref.username,
                 "Flag": flag,
                 "Name": s.Name,
-                "Photo": str("http://127.0.0.1:8000" + s.Photo.url),
+                "Photo": str(s.Photo.url),
                 "Lat": s.last_location_lat,
                 "Long": s.last_location_long,
             }
@@ -212,7 +212,9 @@ class GetCoordinates(generics.GenericAPIView):
         s = Salesperson.objects.filter(Managed_By=m)
         SalesPerson = []
         for x in s:
+
             if x.isLoggedin == True:
+                print(x)
                 d_Salesperson = {
                     "id": x.User_ref.username,
                     "Lat": x.last_location_lat,
@@ -220,6 +222,7 @@ class GetCoordinates(generics.GenericAPIView):
                 }
                 SalesPerson.append(d_Salesperson)
                 d_Salesperson = {}
+        print(SalesPerson)
         response = {"Coordinates": SalesPerson}
 
         return JsonResponse(response, status=status.HTTP_200_OK)
