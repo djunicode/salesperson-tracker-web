@@ -21,9 +21,16 @@ class Userserializer(serializers.ModelSerializer):
         fields = ["username"]
 
 
+class Managerserializer(serializers.ModelSerializer):
+    user_ref= Userserializer(many=False, read_only=True)
+    class Meta:
+        model = Manager
+        fields=["user_ref"]
+
+
 class SalespersonSerializer(serializers.ModelSerializer):
     User_ref = Userserializer(many=False, read_only=True)
-
+    Managed_By = Managerserializer(many=False, read_only=True)
     class Meta:
         model = Salesperson
         fields = [
