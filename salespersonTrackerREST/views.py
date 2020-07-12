@@ -90,7 +90,7 @@ def SignIn(request):
                 "S_id": s.User_ref.username,
                 "Flag": flag,
                 "Name": s.Name,
-                "Photo": str( s.Photo.url),
+                "Photo": str(s.Photo.url),
                 "Lat": s.last_location_lat,
                 "Long": s.last_location_long,
             }
@@ -212,7 +212,7 @@ class GetCoordinates(generics.GenericAPIView):
         s = Salesperson.objects.filter(Managed_By=m)
         SalesPerson = []
         for x in s:
-            
+
             if x.isLoggedin == True:
                 print(x)
                 d_Salesperson = {

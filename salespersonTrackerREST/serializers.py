@@ -26,15 +26,19 @@ class ManagerSerializer(serializers.HyperlinkedModelSerializer):
         model = Manager
         fields = ["user_ref", "Name", "Photo", "Age"]
 
+
 class Managerserializer1(serializers.ModelSerializer):
-    user_ref= Userserializer(many=False, read_only=True)
+    user_ref = Userserializer(many=False, read_only=True)
+
     class Meta:
         model = Manager
-        fields=["user_ref"]
+        fields = ["user_ref"]
+
 
 class SalespersonSerializer(serializers.ModelSerializer):
     User_ref = Userserializer(many=False, read_only=True)
     Managed_By = Managerserializer1(many=False, read_only=True)
+
     class Meta:
         model = Salesperson
         fields = [
@@ -87,5 +91,3 @@ class InventorySerializer(serializers.ModelSerializer):
 class WarehouseUpdateSerializer(serializers.FileField):
     file = serializers.FileField()
     fields = ["file"]
-
-
