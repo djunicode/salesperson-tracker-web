@@ -8,6 +8,7 @@ import Container from '@material-ui/core/Container';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -34,6 +35,10 @@ const useStyles = makeStyles((theme) => ({
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
+  },
+  setSize: {
+    height: 40,
+    width: 40,
   },
   root: {
     width: '100%',
@@ -73,17 +78,20 @@ const AddPersonToTeam = () => {
     let formData = new FormData();
     formData.append('Authorization', `${token}`);
 
-    fetch(`http://127.0.0.1:8000/Operations/GetSalespersonData`, {
+    fetch(`http://127.0.0.1:8000/GetSalespersonData`, {
       method: 'GET',
       headers: formData,
     })
       .then((res) => res.json())
       .then((data) => {
         const available = data.filter((sp) => sp.Managed_By === null);
+        console.log(available)
         const finalData = available.map((sp) => [
           sp.Name,
           sp.User_ref.username,
+          sp.Photo
         ]);
+        console.log(finalData)
         setspData(finalData);
         setFetchAgain(false);
       })
@@ -96,48 +104,52 @@ const AddPersonToTeam = () => {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
 
-      <form className={classes.form} noValidate>
-        <Grid container spacing={2}>
-          <Grid item xs={10}>
+      <form className={ classes.form } noValidate>
+        <Grid container spacing={ 2 }>
+          <Grid item xs={ 10 }>
             <Typography component="h5" variant="h6">
               ADD SALESPERSON TO TEAM
             </Typography>
           </Grid>
-          <Grid item xs={10}></Grid>
+          <Grid item xs={ 10 }></Grid>
         </Grid>
-        <Grid item xs={12}>
-          {spData.length == 0 ? (
-            <Grid item xs={12}>
+        <Grid item xs={ 12 }>
+          { spData.length == 0 ? (
+            <Grid item xs={ 12 }>
               <Typography component="h8" variant="h9">
                 There is no salesperson free right now
               </Typography>
             </Grid>
           ) : (
-            <List dense className={classes.root}>
-              {spData.map((sp) => {
-                return (
-                  <Grid item xs={12}>
-                    <ListItem key={sp[1]}>
-                      <Grid item xs={6}>
-                        <ListItemText id={sp[1]} primary={`${sp[0]}`} />
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Button
-                          fullWidth
-                          variant="contained"
-                          color="primary"
-                          className={classes.submit}
-                          onClick={sendData.bind('this', sp)}
-                        >
-                          ADD
+              <List dense className={ classes.root }>
+                { spData.map((sp) => {
+                  return (
+                    <Grid item xs={ 12 }>
+                      <ListItem key={ sp[1] }>
+                        <Grid item xs={ 2 }>
+                          <Avatar className={ classes.setSize } src={ sp[2] } />
+                        </Grid>
+                        <Grid item xs={ 4 }>
+                          <ListItemText id={ sp[1] } primary={ `${sp[0]}` } />
+                        </Grid>
+                        <Grid item xs={ 2 }></Grid>
+                        <Grid item xs={ 4 }>
+                          <Button
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={ classes.submit }
+                            onClick={ sendData.bind('this', sp) }
+                          >
+                            ADD
                         </Button>
-                      </Grid>
-                    </ListItem>
-                  </Grid>
-                );
-              })}
-            </List>
-          )}
+                        </Grid>
+                      </ListItem>
+                    </Grid>
+                  );
+                }) }
+              </List>
+            ) }
         </Grid>
       </form>
     </Container>

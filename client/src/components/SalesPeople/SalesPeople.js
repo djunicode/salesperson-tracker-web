@@ -74,9 +74,12 @@ function SalesPeople() {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   const logoutUser = async () => {
-    await localStorage.setItem('Token', null);
-    await localStorage.setItem('Status', 'LoggedOut');
-    await localStorage.setItem('Image', null)
+    const r = window.confirm("Do you really want to logout?")
+    if (r == true) {
+      await localStorage.setItem('Token', null);
+      await localStorage.setItem('Status', 'LoggedOut');
+      await localStorage.setItem('Image', null)
+    }
   };
   return (
     <div className={classes.root}>
@@ -100,7 +103,7 @@ function SalesPeople() {
           <Avatar className={ classes.setSize } src={ localStorage.getItem('Image')} />
         </Container>
         <Typography component="h2" variant="h6" style={{ paddingTop: 20 }}>
-          Admin Name
+          {localStorage.getItem('Name')}
         </Typography>
         <Typography
           component="h3"

@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view, authentication_classes
+from rest_framework.decorators import api_view, authentication_classes, action
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication, BasicAuthentication
 import json
 from django.http import JsonResponse, HttpResponse
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets, permissions
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.utils import timezone
@@ -20,6 +20,7 @@ from .permissions import *
 from .serializers import *
 import pandas as pd
 from rest_framework.authtoken.views import APIView
+from rest_framework.response import Response
 
 ## Virang ke imports
 from rest_framework import viewsets
@@ -55,7 +56,6 @@ def SignIn(request):
 
         try:
             m = Manager.objects.get(user_ref=request.user)
-
             flag = 1
             s = Salesperson.objects.filter(Managed_By=m)
             SalesPerson = []
@@ -293,7 +293,7 @@ class AddToInventory(APIView):
             j = int(j)
             data = {"Salesperson_Ref": pk, "item_Ref": i, "Quantity": j}
             serializer = InventorySerializer(data=data)
-            item = warehouse.objects.get(pk=i)
+            item = Warehouse.objects.get(pk=i)
             if serializer.is_valid():
                 serializer.save()
                 item.Quantity = item.Quantity - j
@@ -321,20 +321,22 @@ class AddToInventory(APIView):
         return JsonResponse({"message": message})
 
 
-
 class WarehouseView(APIView):
     permission_classes = (Permit,)
     authentication_classes = (TokenAuthentication,)
 
     def get(self, request, format=None):
-        items = warehouse.objects.all()
+        items = Warehouse.objects.all()
         serializer = WarehouseSerializer(items, many=True)
         return Response(serializer.data)
 
     def post(self, request):
 
         item_id = request.data["Company_Item_code"]
-        item = warehouse.objects.get(pk=item_id)
+        try:
+            item = Warehouse.objects.get(pk=item_id)
+        except Warehouse.DoesNotExist:
+            item = None
         if item:
             item.Quantity += int(request.data["Quantity"])
             item.save()
@@ -344,10 +346,10 @@ class WarehouseView(APIView):
                 "Company_Code": item.Company_Code,
                 "Quantity": item.Quantity,
                 "Name": item.Name,
-                "Photo": item.Photo,
+                "Photo": str(request.data["Photo"]),
                 "Description": item.Description,
             }
-            return JsonResponse(data, status=status.HTTP_200_OK)
+            return Response(data, status=status.HTTP_200_OK)
         else:
             serializer = WarehouseSerializer(data=request.data)
             if serializer.is_valid():
@@ -365,7 +367,6 @@ class ItemAssignView(APIView):
         items = ItemAssign.objects.filter(Assigned_By=m)
         serializer = ItemAssignSerializer(items, many=True)
         return Response(serializer.data)
-
 
 
 # Populate Database----------------------------------------------------------------------------------------------------------
@@ -404,3 +405,44 @@ class UpdateWarehouse(generics.GenericAPIView):
     def post(self, request):
         file = request.data["file"]
         print(type(file))
+
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = Userserializer
+    permission_classes = (permissions.IsAdminUser,)
+    # authentication_classes = (TokenAuthentication,)
+
+
+class ManagerViewSet(viewsets.ModelViewSet):
+    queryset = Manager.objects.all()
+    serializer_class = ManagerSerializer
+    permission_classes = (permissions.IsAdminUser,)
+    # authentication_classes = (TokenAuthentication,)
+
+
+class SalespersonViewSet(viewsets.ModelViewSet):
+    queryset = Salesperson.objects.all()
+    serializer_class = SalespersonSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    # authentication_classes = (TokenAuthentication, )
+
+
+class WarehouseViewSet(viewsets.ModelViewSet):
+    queryset = Warehouse.objects.all()
+    serializer_class = WarehouseSerializer
+    permission_classes = (Permit,)
+    # authentication_classes = (TokenAuthentication, )
+
+
+class InventoryViewSet(viewsets.ModelViewSet):
+    queryset = Inventory.objects.all()
+    serializer_class = InventorySerializer
+
+    @action(detail=False)
+    def inventory(self, request):
+        inv = Inventory.objects.filter(user_ref=request.user)  # Android Endpoint
+        serializer = self.get_serializer(inv, many=True)
+        return Response(serializer.data)
+
+    # authentication_classes = (TokenAuthentication, )

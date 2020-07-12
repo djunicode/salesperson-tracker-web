@@ -13,7 +13,6 @@ import auth from '../auth';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Call it once in your app. At the root of your app is the best place
 toast.configure({
   position: 'top-right',
   autoClose: '2000',
@@ -97,7 +96,7 @@ export default function SignIn(props) {
     formData.append('Username', `${values.username}`);
     formData.append('Password', `${values.password}`);
 
-    fetch(`http://127.0.0.1:8000/Operations/SignIn`, {
+    fetch(`http://127.0.0.1:8000/SignIn`, {
       method: 'POST',
       body: formData,
     })
@@ -108,6 +107,8 @@ export default function SignIn(props) {
           localStorage.setItem('Token', data.Token);
           localStorage.setItem('Status', 'LoggedIn');
           localStorage.setItem('Image', data.Photo);
+          localStorage.setItem('Name',data.Name);
+          localStorage.setItem('m_id',data.m_id);
           auth.login(() => {
             props.history.push('/dashboard');
           });

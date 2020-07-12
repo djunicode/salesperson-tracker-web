@@ -18,6 +18,7 @@ import {
   Box,
 } from '@material-ui/core';
 import purple from '@material-ui/core/colors/purple';
+import AssignProduct from './AssignProduct';
 
 const purp = purple[900];
 
@@ -70,9 +71,12 @@ const useStyles = makeStyles((theme) => ({
 function Inventory() {
   const classes = useStyles();
   const logoutUser = async () => {
-    await localStorage.setItem('Token', null);
-    await localStorage.setItem('Status', 'LoggedOut');
-    await localStorage.setItem('Image', null)
+    const r = window.confirm("Do you really want to logout?")
+    if (r == true) {
+      await localStorage.setItem('Token', null);
+      await localStorage.setItem('Status', 'LoggedOut');
+      await localStorage.setItem('Image', null)
+    }
   };
   return (
     <div className={classes.root}>
@@ -93,10 +97,10 @@ function Inventory() {
       >
         <div className={classes.toolbar} />
         <Container maxWidth="sm" className={classes.makeCenter}>
-          <Avatar className={ classes.setSize } src={ localStorage.getItem('Image')} />
+          <Avatar className={ classes.setSize } src={localStorage.getItem('Image')} />
         </Container>
         <Typography component="h2" variant="h6" style={{ paddingTop: 20 }}>
-          Admin Name
+          {localStorage.getItem('Name')}
         </Typography>
         <Typography
           component="h3"
@@ -144,9 +148,14 @@ function Inventory() {
 
             <Grid item xs={12} md={6} lg={6}>
               <Paper className={classes.paper}>
-                <AddItem />
+                <AssignProduct/>
               </Paper>
             </Grid>
+            {/* <Grid item xs={12} md={6} lg={6}>
+              <Paper className={classes.paper}>
+                <AddItem />
+              </Paper>
+            </Grid> */}
           </Grid>
           <Box pt={4}></Box>
         </Container>

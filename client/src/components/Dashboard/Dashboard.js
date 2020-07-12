@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -6,24 +6,17 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
-import AddItem from '../Inventory/AddItem';
-import Stocks from '../Inventory/Stocks';
 import clsx from 'clsx';
 import {
   Container,
   Button,
   ButtonGroup,
-  Grid,
-  Paper,
-  Box,
 } from '@material-ui/core';
 import purple from '@material-ui/core/colors/purple';
 import Map from './Map';
-import auth from '../../auth';
 
 const purp = purple[900];
 const drawerWidth = 241;
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -73,10 +66,14 @@ export default function Dashboard(props) {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   const logoutUser = async () => {
+    const r = window.confirm("Do you really want to logout?")
+    if(r == true){
     await localStorage.setItem('Token', null);
     await localStorage.setItem('Status', 'LoggedOut');
     await localStorage.setItem('Image', null)
-  };
+    }
+    }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -99,7 +96,7 @@ export default function Dashboard(props) {
           <Avatar className={ classes.setSize } src={ localStorage.getItem('Image') } />
         </Container>
         <Typography component="h2" variant="h6" style={{ paddingTop: 20 }}>
-          Admin Name
+          {localStorage.getItem('Name')}
         </Typography>
         <Typography
           component="h3"
