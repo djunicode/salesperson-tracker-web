@@ -14,6 +14,7 @@ class Manager(models.Model):
     Name = models.CharField(max_length=100)
     Photo = models.ImageField(upload_to="managers", default="Icon.jpg")
     Age = models.IntegerField()
+    Phone_no = models.IntegerField()
 
     def __str__(self):
         return self.user_ref.username
@@ -33,6 +34,7 @@ class Salesperson(models.Model):
     last_location_lat = models.FloatField(null=True)
     last_location_long = models.FloatField(null=True)
     isLoggedin = models.BooleanField(default=False)
+    Phone_no = models.IntegerField()
 
     def __str__(self):
         return self.User_ref.username
