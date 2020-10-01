@@ -22,7 +22,7 @@ import pandas as pd
 from rest_framework.authtoken.views import APIView
 from rest_framework.response import Response
 
-## Virang ke imports
+# Virang ke imports
 from rest_framework import viewsets
 from rest_framework import response
 
@@ -273,7 +273,7 @@ class BillView(viewsets.ModelViewSet):
     permission_classes = [pm.IsAuthenticated, pm.IsAdminUser]
 
 
-##AliAbbas
+# AliAbbas
 class InventoryList(generics.ListAPIView):
     serializer_class = InventorySerializer
     permission_classes = (Permit,)
@@ -368,6 +368,22 @@ class ItemAssignView(APIView):
         serializer = ItemAssignSerializer(items, many=True)
         return Response(serializer.data)
 
+# Endpoint to Integrate with Frontend Based on QR Scanner
+
+
+class WarehouseItemEntry(generics.GenericAPIView):
+    def post(self, request):
+        Item_Group_Code = request.data['Item_Group_Code']
+        Company_Item_code = request.data['Company_Item_code']
+        Company_Code = request.data['Company_Code']
+        Quantity = request.data['Quantity']
+        Name = request.data['Name']
+        Description = request.data['Description']
+        c = Warehouse(Item_Group_Code=Item_Group_Code, Company_Item_code=Company_Item_code,
+                      Company_Code=Company_Code, Quantity=Quantity, Name=Name, Description=Description)
+        c.save()
+        return JsonResponse({"flag": "1"}, status=status.HTTP_201_OK)
+
 
 # Populate Database----------------------------------------------------------------------------------------------------------
 def ManagerPopulate(request):
@@ -392,7 +408,8 @@ def SalespersonPopulate(request):
         u_ref = User.objects.get(username=df.loc[i, "Managed_By"])
         m = Manager.objects.get(user_ref=u_ref)
         s = Salesperson(
-            User_ref=u, Name=df.loc[i, "Name"], Age=df.loc[i, "Age"], Managed_By=m
+            User_ref=u, Name=df.loc[i,
+                                    "Name"], Age=df.loc[i, "Age"], Managed_By=m
         )
         s.save()
     return JsonResponse("Done", status=status.HTTP_200_OK, safe=False)
@@ -441,7 +458,8 @@ class InventoryViewSet(viewsets.ModelViewSet):
 
     @action(detail=False)
     def inventory(self, request):
-        inv = Inventory.objects.filter(user_ref=request.user)  # Android Endpoint
+        inv = Inventory.objects.filter(
+            user_ref=request.user)  # Android Endpoint
         serializer = self.get_serializer(inv, many=True)
         return Response(serializer.data)
 
